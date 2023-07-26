@@ -12,6 +12,7 @@ extern "C"
 	AILayerSuite*			sAILayer = NULL;
 	AIArtSuite*				sAIArt = NULL;
 	AIPathStyleSuite*		sAIPathStyle = NULL;
+	AIPanelSuite*           sAIPanel = NULL;
 }
 
 // Import suites
@@ -25,5 +26,6 @@ ImportSuite gImportSuites[] =
 	kAILayerSuite, kAILayerVersion, &sAILayer,
 	kAIArtSuite, kAIArtSuiteVersion, &sAIArt,
 	kAIPathStyleSuite, kAIPathStyleSuiteVersion, &sAIPathStyle,
+	kAIPanelSuite, kAIPanelSuiteVersion, &sAIPanel,
 	nil, 0, nil
 };

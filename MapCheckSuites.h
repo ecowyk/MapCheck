@@ -4,6 +4,8 @@
 #include "IllustratorSDK.h"
 #include "Suites.hpp"
 
+#include "AIPanel.h"
+
 // AI suite headers
 
 // Suite externs
@@ -15,4 +17,5 @@ extern "C" AILayerListSuite*        sAILayerList;
 extern "C" AILayerSuite*            sAILayer;
 extern "C" AIArtSuite*              sAIArt;
 extern "C" AIPathStyleSuite*        sAIPathStyle;
+extern "C" AIPanelSuite*            sAIPanel;
 #endif
