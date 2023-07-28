@@ -18,57 +18,59 @@
 
 const ai::int32 ErrorNumMax = 100;
 const ai::int32 ErrorNumPerPage = 10;
-const ai::int32 ErrorTypeNum = 13;
+const ai::int32 ErrorTypeNum = 14;
 
 using namespace std;
 class CollectError
 {
 public:
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	CollectError()
 	{
 		ErrorNum = 0;
 		CurPage = 0;
 		PageNum = 0;
-		ErrorTypeList.insert(make_pair(1,"Ãæ»ıĞ¡ÓÚ25Æ½·½ºÁÃ×£¬¸Äµã×´"));
-		ErrorTypeList.insert(make_pair(2,"ÖÁÉÙÅäÖÃÁ½¸ö·ûºÅ"));
-		ErrorTypeList.insert(make_pair(3,"Ğ¡ÓÚ4Æ½·½ÀåÃ×µÄ²»¼ÓĞÔÖÊ×¢¼Ç"));
-		ErrorTypeList.insert(make_pair(4,"ÂÌÉ«¶à±ßĞÎÑ¹ÔÚÂ·ÉÏ"));
-		ErrorTypeList.insert(make_pair(5,"µçÁ¦Ïß°ë¸ö·ûºÅÓ¦ÉáÆú"));
-		ErrorTypeList.insert(make_pair(6,"Ë®Ñ¹ÔÚµçÏßÉÏ"));
-		ErrorTypeList.insert(make_pair(7,"µÈ¸ßÏßÓöË«ÏßºÓÓ¦¶Ï¿ª"));
-		ErrorTypeList.insert(make_pair(8,"µÈ¸ßÏßÓëºÓÁ÷Ì×ºÏ"));
-		ErrorTypeList.insert(make_pair(9,"µÀÂ·Ñ¹¸Ç¹ØÏµ²»ÕıÈ·-1"));
-		ErrorTypeList.insert(make_pair(10,"µÀÂ·Ñ¹¸Ç¹ØÏµ²»ÕıÈ·-2"));
-		ErrorTypeList.insert(make_pair(11,"ºÓÑ¹ÔÚÂ·ÉÏÊÇ·ñÓĞÇÅÁº-1"));
-		ErrorTypeList.insert(make_pair(12,"ºÓÑ¹ÔÚÂ·ÉÏÊÇ·ñÓĞÇÅÁº-2"));
-		ErrorTypeList.insert(make_pair(13,"ÖØ°æ"));
+		ErrorTypeList.insert(make_pair(1,"é¢ç§¯å°äº25å¹³æ–¹æ¯«ç±³ï¼Œæ”¹ç‚¹çŠ¶"));
+		ErrorTypeList.insert(make_pair(2,"è‡³å°‘é…ç½®ä¸¤ä¸ªç¬¦å·"));
+		ErrorTypeList.insert(make_pair(3,"å°äº4å¹³æ–¹å˜ç±³çš„ä¸åŠ æ€§è´¨æ³¨è®°"));
+		ErrorTypeList.insert(make_pair(4,"ç»¿è‰²å¤šè¾¹å½¢å‹åœ¨è·¯ä¸Š"));
+		ErrorTypeList.insert(make_pair(5,"ç”µåŠ›çº¿åŠä¸ªç¬¦å·åº”èˆå¼ƒ"));
+		ErrorTypeList.insert(make_pair(6,"æ°´å‹åœ¨ç”µçº¿ä¸Š"));
+		ErrorTypeList.insert(make_pair(7,"ç­‰é«˜çº¿é‡åŒçº¿æ²³åº”æ–­å¼€"));
+		ErrorTypeList.insert(make_pair(8,"ç­‰é«˜çº¿ä¸æ²³æµå¥—åˆ"));
+		ErrorTypeList.insert(make_pair(9,"é“è·¯å‹ç›–å…³ç³»ä¸æ­£ç¡®-1"));
+		ErrorTypeList.insert(make_pair(10,"é“è·¯å‹ç›–å…³ç³»ä¸æ­£ç¡®-2"));
+		ErrorTypeList.insert(make_pair(11,"æ²³å‹åœ¨è·¯ä¸Šæ˜¯å¦æœ‰æ¡¥æ¢-1"));
+		ErrorTypeList.insert(make_pair(12,"æ²³å‹åœ¨è·¯ä¸Šæ˜¯å¦æœ‰æ¡¥æ¢-2"));
+		ErrorTypeList.insert(make_pair(13,"é‡ç‰ˆ"));
+		ErrorTypeList.insert(make_pair(14,"ç­‰é«˜çº¿é—´éš”åº”å¤§äº0.2mm"));
 	}
-	//Îö¹¹º¯Êı
+	//ææ„å‡½æ•°
 	~CollectError(){};
-	//Ìí¼Ó´íÎó
+	//æ·»åŠ é”™è¯¯
 	void AddError(ai::int32 errorType,ai::int32 layerOrdinalNum,ai::int32 artOrdinalNum)
 	{
 		/*
-		Ãæ»ıĞ¡ÓÚ25Æ½·½ºÁÃ×£¬¸Äµã×´      1
-		ÖÁÉÙÅäÖÃÁ½¸ö·ûºÅ                2
-		Ğ¡ÓÚ4Æ½·½ÀåÃ×µÄ²»¼ÓĞÔÖÊ×¢¼Ç     3
-		ÂÌÉ«¶à±ßĞÎÑ¹ÔÚÂ·ÉÏ              4
-		µçÁ¦Ïß°ë¸ö·ûºÅÓ¦ÉáÆú            5
-		Ë®Ñ¹ÔÚµçÏßÉÏ                    6
-		µÈ¸ßÏßÓöË«ÏßºÓÓ¦¶Ï¿ª            7
-		µÈ¸ßÏßÓëºÓÁ÷Ì×ºÏ                8
-		µÀÂ·Ñ¹¸Ç¹ØÏµ²»ÕıÈ·-1            9
-		µÀÂ·Ñ¹¸Ç¹ØÏµ²»ÕıÈ·-2            10
-		ºÓÑ¹ÔÚÂ·ÉÏÊÇ·ñÓĞÇÅÁº-1          11
-		ºÓÑ¹ÔÚÂ·ÉÏÊÇ·ñÓĞÇÅÁº-2          12
-		ÖØ°æ                            13
+		é¢ç§¯å°äº25å¹³æ–¹æ¯«ç±³ï¼Œæ”¹ç‚¹çŠ¶      1
+		è‡³å°‘é…ç½®ä¸¤ä¸ªç¬¦å·                2
+		å°äº4å¹³æ–¹å˜ç±³çš„ä¸åŠ æ€§è´¨æ³¨è®°     3
+		ç»¿è‰²å¤šè¾¹å½¢å‹åœ¨è·¯ä¸Š              4
+		ç”µåŠ›çº¿åŠä¸ªç¬¦å·åº”èˆå¼ƒ            5
+		æ°´å‹åœ¨ç”µçº¿ä¸Š                    6
+		ç­‰é«˜çº¿é‡åŒçº¿æ²³åº”æ–­å¼€            7
+		ç­‰é«˜çº¿ä¸æ²³æµå¥—åˆ                8
+		é“è·¯å‹ç›–å…³ç³»ä¸æ­£ç¡®-1            9
+		é“è·¯å‹ç›–å…³ç³»ä¸æ­£ç¡®-2            10
+		æ²³å‹åœ¨è·¯ä¸Šæ˜¯å¦æœ‰æ¡¥æ¢-1          11
+		æ²³å‹åœ¨è·¯ä¸Šæ˜¯å¦æœ‰æ¡¥æ¢-2          12
+		é‡ç‰ˆ                           13
+     		ç­‰é«˜çº¿é—´éš”                     14
 		*/
 		ErrorNum++;
 		ErrorInfo errorInfo = {errorType,layerOrdinalNum,artOrdinalNum};
 		this->errors.push_back(errorInfo);
 	}
-	//´òÓ¡´íÎó
+	//æ‰“å°é”™è¯¯
 	void PrintErrorInfo()
 	{
 		ai::UnicodeString allInfo=ai::UnicodeString("");
@@ -89,30 +91,30 @@ public:
 		}
 		sAIUser->MessageAlert(allInfo);
 	}
-	//ÏÔÊ¾´íÎó
+	//æ˜¾ç¤ºé”™è¯¯
 	void SetErrorRed()
     {
 	    ASErr error = kNoErr;
  
-	    ai::int32 layerListCount;//Í¼²ãÁĞ±íÊı
-	    ai::int32 layerCount;//Ò»¸öÍ¼²ãÁĞ±íÖĞµÄÍ¼²ãÊı
+	    ai::int32 layerListCount;//å›¾å±‚åˆ—è¡¨æ•°
+	    ai::int32 layerCount;//ä¸€ä¸ªå›¾å±‚åˆ—è¡¨ä¸­çš„å›¾å±‚æ•°
 
-	    AILayerList list;//Í¼²ãÁĞ±í
-	    AILayerHandle layer;//Í¼²ã
+	    AILayerList list;//å›¾å±‚åˆ—è¡¨
+	    AILayerHandle layer;//å›¾å±‚
 
-	    AIArtHandle path;//Â·¾¶
-	    AIPathStyle style;//Â·¾¶ÑùÊ½
+	    AIArtHandle path;//è·¯å¾„
+	    AIPathStyle style;//è·¯å¾„æ ·å¼
 	    ai::int32 curLayerNum = 0;
-	    //²âÊÔ¸÷ÖÖapi
-	    error = sAILayerList->Count(&layerListCount);//»ñÈ¡Í¼²ãÁĞ±íÊıÁ¿
-	    error = sAILayerList->GetFirst(&list);//»ñÈ¡µÚÒ»¸öÍ¼²ãÁĞ±í
-	    error = sAILayerList->CountLayers(list,&layerCount);//»ñÈ¡¸ÃÍ¼²ãÁĞ±íÓĞ¶àÉÙ¸öÍ¼²ã
-	    error = sAILayerList->GetFirstLayer(list,&layer);//»ñÈ¡µÚÒ»¸öÍ¼²ã
+	    //æµ‹è¯•å„ç§api
+	    error = sAILayerList->Count(&layerListCount);//è·å–å›¾å±‚åˆ—è¡¨æ•°é‡
+	    error = sAILayerList->GetFirst(&list);//è·å–ç¬¬ä¸€ä¸ªå›¾å±‚åˆ—è¡¨
+	    error = sAILayerList->CountLayers(list,&layerCount);//è·å–è¯¥å›¾å±‚åˆ—è¡¨æœ‰å¤šå°‘ä¸ªå›¾å±‚
+	    error = sAILayerList->GetFirstLayer(list,&layer);//è·å–ç¬¬ä¸€ä¸ªå›¾å±‚
 
 	    while(layer)
 	    {
-		    error = sAIArt->GetFirstArtOfLayer(layer,&path);//»ñÈ¡¸ÃÍ¼²ãµÄµÚÒ»¸öÍ¼Ôª
-		    error = sAIArt->GetArtFirstChild(path,&path);//»ñÈ¡µÚÒ»ÌõÂ·¾¶
+		    error = sAIArt->GetFirstArtOfLayer(layer,&path);//è·å–è¯¥å›¾å±‚çš„ç¬¬ä¸€ä¸ªå›¾å…ƒ
+		    error = sAIArt->GetArtFirstChild(path,&path);//è·å–ç¬¬ä¸€æ¡è·¯å¾„
 	    	ai::int32 curArtNum = 0;
 	    	while(path)
 	    	{
@@ -143,9 +145,9 @@ public:
 
     }
 public:
-	vector<ErrorInfo> errors;//´íÎóÊı×é
+	vector<ErrorInfo> errors;//é”™è¯¯æ•°ç»„
 	map<ai::int32,string> ErrorTypeList;
-	ai::int32 ErrorNum;//´íÎóÊıÁ¿
+	ai::int32 ErrorNum;//é”™è¯¯æ•°é‡
 	ai::int32 CurPage;
 	ai::int32 PageNum;
 };
