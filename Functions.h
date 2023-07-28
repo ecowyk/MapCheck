@@ -11,31 +11,37 @@
 #define __Functions_h__
 
 #include "Structs.h"
-AIBoolean JudgePath1InsidePath2(MyPath path1,MyPath path2);//Ò»ÌõÂ·¾¶ÔÚÁíÒ»ÌõÀïÃæ,path¾ùÎª¶à±ßĞÎ
+AIBoolean JudgePath1InsidePath2(MyPath path1,MyPath path2);//ä¸€æ¡è·¯å¾„åœ¨å¦ä¸€æ¡é‡Œé¢,pathå‡ä¸ºå¤šè¾¹å½¢
 
-AIBoolean JudgeLineIntersectLine(Line line1, Line line2);//Ïß¶ÎÏà½»
+AIBoolean JudgeLineIntersectLine(Line line1, Line line2);//çº¿æ®µç›¸äº¤
 
-AIBoolean JudgeLineOthogonal(Line line1,Line line2);//ÅĞ¶ÏÏß¶ÎÕı½»
+AIBoolean JudgeLineOthogonal(Line line1,Line line2);//åˆ¤æ–­çº¿æ®µæ­£äº¤
 
-AIBoolean JudgePathIntersectPath(MyPath path1,MyPath path2);//Â·¾¶ºÍÂ·¾¶Ïà½»
+AIBoolean JudgePathIntersectPath(MyPath path1,MyPath path2);//è·¯å¾„å’Œè·¯å¾„ç›¸äº¤
 
-AIBoolean JudgePathIntersectPath2(MyPath path1,MyPath path2);//ÅĞ¶ÏÂ·¾¶Ïà½»£¬path2Îª±ÕºÏÂ·¾¶
+AIBoolean JudgePathIntersectPath2(MyPath path1,MyPath path2);//åˆ¤æ–­è·¯å¾„ç›¸äº¤ï¼Œpath2ä¸ºé—­åˆè·¯å¾„
 
-AIBoolean JudgePathOthogonal(MyPath path1,MyPath path2);//ÅĞ¶ÏÂ·¾¶Õı½»
+AIBoolean JudgePathOthogonal(MyPath path1,MyPath path2);//åˆ¤æ–­è·¯å¾„æ­£äº¤
 
-AIBoolean JudgePathIntersectPath(MyPath path1,MyPath path2,ai::int32& count);//ÅĞ¶ÏÂ·¾¶Ïà½»²¢¸ø³ö½»µãÊı
+AIBoolean JudgePathIntersectPath(MyPath path1,MyPath path2,ai::int32& count);//åˆ¤æ–­è·¯å¾„ç›¸äº¤å¹¶ç»™å‡ºäº¤ç‚¹æ•°
 
-AIBoolean OtherWhiteMatching(MyPath path1,MyPath path2);//Æ¥Åäº¯Êı
+AIBoolean OtherWhiteMatching(MyPath path1,MyPath path2);//åŒ¹é…å‡½æ•°
 
-AIBoolean OtherWhiteMatching2(MyPath path1,MyPath path2);//ÓÃÓÚbridge_2µÄÆ¥Åä
+AIBoolean OtherWhiteMatching2(MyPath path1,MyPath path2);//ç”¨äºbridge_2çš„åŒ¹é…
 
-AIBoolean SegmentEqual(AIPathSegment segment1,AIPathSegment segment2);//ÃªµãÏàµÈÅĞ¶Ï
+AIBoolean SegmentEqual(AIPathSegment segment1,AIPathSegment segment2);//é”šç‚¹ç›¸ç­‰åˆ¤æ–­
 
-AIBoolean JudgeSegmentInPath(AIPathSegment segment , MyPath path);//ÅĞ¶ÏÃªµãÊÇ·ñÔÚÂ·¾¶(¶à±ßĞÎ)ÄÚ
+AIBoolean JudgeSegmentInPath(AIPathSegment segment , MyPath path);//åˆ¤æ–­é”šç‚¹æ˜¯å¦åœ¨è·¯å¾„(å¤šè¾¹å½¢)å†…
 
-AIBoolean JudgeSegmentInCircle(AIPathSegment segment,MyPath circle);//ÅĞ¶ÏÃªµãÊÇ·ñÔÚÔ²ÄÚ
+AIBoolean JudgeSegmentInCircle(AIPathSegment segment,MyPath circle);//åˆ¤æ–­é”šç‚¹æ˜¯å¦åœ¨åœ†å†…
 
-AIReal round(AIReal r);//ËÄÉáÎåÈë
+AIReal round(AIReal r);//å››èˆäº”å…¥
+
+double segmentLength(Line l);//çº¿æ®µé•¿åº¦
+
+double pointToSegmentDistance(AIReal x,AIReal y,Line l);//ç‚¹åˆ°çº¿æ®µè·ç¦»
+
+double shortestDistanceBetweenPolylines(MyPath polyline1,MyPath polyline2);//æŠ˜çº¿é—´æœ€çŸ­è·ç¦»
 
 
 #endif
