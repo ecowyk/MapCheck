@@ -43,7 +43,7 @@ ASErr MapCheckPlugin::StartupPlugin( SPInterfaceMessage *message )
 	
 	AddWidgets();
 
-	//¥¥Ω®¥ÌŒÛ¡–±Ì√Ê∞Â
+	//ÂàõÂª∫ÈîôËØØÂàóË°®Èù¢Êùø
 	AISize pnSize2 = {240, 320};
 	error = sAIPanel->Create(fPluginRef, ai::UnicodeString("ErrorList"),ai::UnicodeString("ErrorList"),3,pnSize2,true,NULL,this,fPanel2);
 	if(error)
@@ -59,7 +59,7 @@ ASErr MapCheckPlugin::AddWidgets()
 {
 	ASErr error = kNoErr;
 	
-	//¥¥Ω®—°‘ÒºÏ≤‚¿‡–Õ√Ê∞Â
+	//ÂàõÂª∫ÈÄâÊã©Ê£ÄÊµãÁ±ªÂûãÈù¢Êùø
 	AISize pnSize = {240, 320};
 	error = sAIPanel->Create(fPluginRef, ai::UnicodeString("MapCheck"),ai::UnicodeString("MapCheck"),3,pnSize,true,NULL,this,fPanel);
 	if(error)
@@ -69,12 +69,12 @@ ASErr MapCheckPlugin::AddWidgets()
 	error = sAIPanel->Show(fPanel,true);
 	AIPanelPlatformWindow hDlg = NULL;
 	error = sAIPanel->GetPlatformWindow(fPanel, hDlg);
-	//¥¥Ω®∏¥—°øÚ
+	//ÂàõÂª∫Â§çÈÄâÊ°Ü
 
-	HWND text = CreateWindowEx(0,"Static","«Î—°‘Ò–Ë“™ºÏ≤‚µƒ¥ÌŒÛ",WS_VISIBLE|WS_CHILD|WS_BORDER,200,10,200,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
-	button1 = CreateWindowEx(0,"BUTTON","ø™ ººÏ≤‚",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_PUSHBUTTON,50,500,100,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
-	button2 = CreateWindowEx(0,"BUTTON","»´—°",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_PUSHBUTTON,250,500,100,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
-	button3 = CreateWindowEx(0,"BUTTON","»°œ˚»´—°",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_PUSHBUTTON,450,500,100,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
+	HWND text = CreateWindowEx(0,"Static","ËØ∑ÈÄâÊã©ÈúÄË¶ÅÊ£ÄÊµãÁöÑÈîôËØØ",WS_VISIBLE|WS_CHILD|WS_BORDER,200,10,200,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
+	button1 = CreateWindowEx(0,"BUTTON","ÂºÄÂßãÊ£ÄÊµã",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_PUSHBUTTON,50,500,100,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
+	button2 = CreateWindowEx(0,"BUTTON","ÂÖ®ÈÄâ",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_PUSHBUTTON,250,500,100,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
+	button3 = CreateWindowEx(0,"BUTTON","ÂèñÊ∂àÂÖ®ÈÄâ",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_PUSHBUTTON,450,500,100,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
 	checkBoxs[0] = CreateWindowEx(0,"BUTTON","Error1",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,10,50,150,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
 	checkBoxs[1] = CreateWindowEx(0,"BUTTON","Error2",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,10,100,150,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
 	checkBoxs[2] = CreateWindowEx(0,"BUTTON","Error3",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,10,150,150,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
@@ -88,6 +88,7 @@ ASErr MapCheckPlugin::AddWidgets()
 	checkBoxs[10] = CreateWindowEx(0,"BUTTON","Error11",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,310,200,150,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
 	checkBoxs[11] = CreateWindowEx(0,"BUTTON","Error12",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,310,250,150,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
 	checkBoxs[12] = CreateWindowEx(0,"BUTTON","Error13",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,310,300,150,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
+	checkBoxs[13] = CreateWindowEx(0,"BUTTON","Error14",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,310,350,150,30,hDlg,NULL,(HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE),NULL);
 
 	::SetPropA(hDlg, "TPNL", this);
 	fDefaultWindProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(hDlg, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(MapCheckPlugin::NewWindowProc)));
@@ -101,7 +102,7 @@ ASErr MapCheckPlugin::CreateErrorListDlg(CollectError& collectError)
 
 	
 
-	HWND text = CreateWindowEx(0,"Static","¥ÌŒÛ¡–±Ì",WS_VISIBLE|WS_CHILD|WS_BORDER,350,10,100,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
+	HWND text = CreateWindowEx(0,"Static","ÈîôËØØÂàóË°®",WS_VISIBLE|WS_CHILD|WS_BORDER,350,10,100,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
 	collectError.PageNum = collectError.ErrorNum / ErrorNumPerPage + 1;
 	collectError.CurPage = 1;
 	if(collectError.PageNum > 1)
@@ -109,8 +110,8 @@ ASErr MapCheckPlugin::CreateErrorListDlg(CollectError& collectError)
 		for(ai::int32 i = 0;i<ErrorNumPerPage;i++)
 	    {
 		    errorDescription[i] = CreateWindowEx(0,"Static",collectError.ErrorTypeList[collectError.errors[i].errorType].c_str(),WS_VISIBLE|WS_CHILD|WS_BORDER,10,50+i*50,400,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
-			errorHighlight[i] = CreateWindowEx(0,"Button","¥ÌŒÛ∏ﬂ¡¡œ‘ æ",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,450,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
-			errorCorrected[i] = CreateWindowEx(0,"Button","¥ÌŒÛ“—–ﬁ’˝",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,650,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
+			errorHighlight[i] = CreateWindowEx(0,"Button","ÈîôËØØÈ´ò‰∫ÆÊòæÁ§∫",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,450,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
+			errorCorrected[i] = CreateWindowEx(0,"Button","ÈîôËØØÂ∑≤‰øÆÊ≠£",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,650,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
 	    }
 	}
 	else
@@ -118,12 +119,12 @@ ASErr MapCheckPlugin::CreateErrorListDlg(CollectError& collectError)
 		for(ai::int32 i = 0;i<collectError.ErrorNum;i++)
 	    {
 		    errorDescription[i] = CreateWindowEx(0,"Static",collectError.ErrorTypeList[collectError.errors[i].errorType].c_str(),WS_VISIBLE|WS_CHILD|WS_BORDER,10,50+i*50,400,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
-			errorHighlight[i] = CreateWindowEx(0,"Button","¥ÌŒÛ∏ﬂ¡¡œ‘ æ",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,450,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
-			errorCorrected[i] = CreateWindowEx(0,"Button","¥ÌŒÛ“—–ﬁ’˝",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,650,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
+			errorHighlight[i] = CreateWindowEx(0,"Button","ÈîôËØØÈ´ò‰∫ÆÊòæÁ§∫",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,450,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
+			errorCorrected[i] = CreateWindowEx(0,"Button","ÈîôËØØÂ∑≤‰øÆÊ≠£",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,650,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
 	    }
 	}
-	previousPageButton = CreateWindowEx(0,"BUTTON","…œ“ª“≥",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_PUSHBUTTON,500,700,80,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
-	nextPageButton = CreateWindowEx(0,"BUTTON","œ¬“ª“≥",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_PUSHBUTTON,700,700,80,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
+	previousPageButton = CreateWindowEx(0,"BUTTON","‰∏ä‰∏ÄÈ°µ",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_PUSHBUTTON,500,700,80,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
+	nextPageButton = CreateWindowEx(0,"BUTTON","‰∏ã‰∏ÄÈ°µ",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_PUSHBUTTON,700,700,80,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
 	string page = "1/"+to_string(static_cast<long long>(collectError.PageNum));
 	HWND pageText = CreateWindowEx(0,"Static",page.c_str(),WS_VISIBLE|WS_CHILD|WS_BORDER,600,700,30,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
 
@@ -148,8 +149,8 @@ ASErr MapCheckPlugin::UpdateErrorList(CollectError& collectError)
 		for(ai::int32 i = 0;i<ErrorNumPerPage;i++)
 	    {
 			errorDescription[i+(collectError.CurPage-1)*ErrorNumPerPage] = CreateWindowEx(0,"Static",collectError.ErrorTypeList[collectError.errors[i+(collectError.CurPage-1)*ErrorNumPerPage].errorType].c_str(),WS_VISIBLE|WS_CHILD|WS_BORDER,10,50+i*50,400,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
-			errorHighlight[i+(collectError.CurPage-1)*ErrorNumPerPage] = CreateWindowEx(0,"Button","¥ÌŒÛ∏ﬂ¡¡œ‘ æ",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,450,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
-			errorCorrected[i+(collectError.CurPage-1)*ErrorNumPerPage] = CreateWindowEx(0,"Button","¥ÌŒÛ“—–ﬁ’˝",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,650,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
+			errorHighlight[i+(collectError.CurPage-1)*ErrorNumPerPage] = CreateWindowEx(0,"Button","ÈîôËØØÈ´ò‰∫ÆÊòæÁ§∫",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,450,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
+			errorCorrected[i+(collectError.CurPage-1)*ErrorNumPerPage] = CreateWindowEx(0,"Button","ÈîôËØØÂ∑≤‰øÆÊ≠£",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,650,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
 	    }
 	}
 	else
@@ -157,8 +158,8 @@ ASErr MapCheckPlugin::UpdateErrorList(CollectError& collectError)
 		for(ai::int32 i = 0;i<collectError.ErrorNum-(collectError.CurPage-1)*ErrorNumPerPage;i++)
 	    {
 		    errorDescription[i+(collectError.CurPage-1)*ErrorNumPerPage] = CreateWindowEx(0,"Static",collectError.ErrorTypeList[collectError.errors[i+(collectError.CurPage-1)*ErrorNumPerPage].errorType].c_str(),WS_VISIBLE|WS_CHILD|WS_BORDER,10,50+i*50,400,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
-			errorHighlight[i+(collectError.CurPage-1)*ErrorNumPerPage] = CreateWindowEx(0,"Button","¥ÌŒÛ∏ﬂ¡¡œ‘ æ",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,450,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
-			errorCorrected[i+(collectError.CurPage-1)*ErrorNumPerPage] = CreateWindowEx(0,"Button","¥ÌŒÛ“—–ﬁ’˝",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,650,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
+			errorHighlight[i+(collectError.CurPage-1)*ErrorNumPerPage] = CreateWindowEx(0,"Button","ÈîôËØØÈ´ò‰∫ÆÊòæÁ§∫",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,450,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
+			errorCorrected[i+(collectError.CurPage-1)*ErrorNumPerPage] = CreateWindowEx(0,"Button","ÈîôËØØÂ∑≤‰øÆÊ≠£",WS_VISIBLE|WS_CHILD|WS_BORDER|BS_AUTOCHECKBOX,650,50+i*50,150,30,hDlg2,NULL,(HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE),NULL);
 	    }
 	}
 	string page = to_string(static_cast<long long>(collectError.CurPage))+"/"+to_string(static_cast<long long>(collectError.PageNum));
@@ -196,8 +197,8 @@ bool MapCheckPlugin::PanelWindowProc(LRESULT& result, HWND hWnd, UINT msg, WPARA
 		{
 			if((HWND)lParam == button1)
 			{
-				AIBoolean flag1 = 0;//”√ªß «∑Ò—°‘Ò¡ÀºÏ≤‚œÓ;
-				AIBoolean flag2 = 0;//”√ªß «∑Ò“—ºÏ≤‚¡ÀÀ˘”–œÓƒø
+				AIBoolean flag1 = 0;//Áî®Êà∑ÊòØÂê¶ÈÄâÊã©‰∫ÜÊ£ÄÊµãÈ°π;
+				AIBoolean flag2 = 0;//Áî®Êà∑ÊòØÂê¶Â∑≤Ê£ÄÊµã‰∫ÜÊâÄÊúâÈ°πÁõÆ
 				for(ai::int32 i = 0;i<ErrorTypeNum;i++)
 				{
 					if(errorSelectedByUser[i] == 1)
@@ -211,13 +212,13 @@ bool MapCheckPlugin::PanelWindowProc(LRESULT& result, HWND hWnd, UINT msg, WPARA
 				}
 				if(flag1 == 0)
 				{
-					sAIUser->MessageAlert(ai::UnicodeString("«Î—°‘Òƒ˙“™ºÏ≤‚µƒœÓƒø£°"));
+					sAIUser->MessageAlert(ai::UnicodeString("ËØ∑ÈÄâÊã©ÊÇ®Ë¶ÅÊ£ÄÊµãÁöÑÈ°πÁõÆÔºÅ"));
 				}
 				else
 				{
 					if(flag2 == ErrorTypeNum)
 					{
-						sAIUser->MessageAlert(ai::UnicodeString("ƒ˙“—ºÏ≤‚¡ÀÀ˘”–œÓƒø£¨«Î¥Ú”°±®∏Ê£°"));
+						sAIUser->MessageAlert(ai::UnicodeString("ÊÇ®Â∑≤Ê£ÄÊµã‰∫ÜÊâÄÊúâÈ°πÁõÆÔºåËØ∑ÊâìÂç∞Êä•ÂëäÔºÅ"));
 					}
 					else
 					{
@@ -229,7 +230,7 @@ bool MapCheckPlugin::PanelWindowProc(LRESULT& result, HWND hWnd, UINT msg, WPARA
 				        		errorCheckedByUser[i] = 1;
 			        		}
 		        		}
-		        		sAIUser->MessageAlert(ai::UnicodeString("ºÏ≤‚ÕÍ±œ£°"));
+		        		sAIUser->MessageAlert(ai::UnicodeString("Ê£ÄÊµãÂÆåÊØïÔºÅ"));
 					}
 				}
 			}
@@ -300,6 +301,10 @@ bool MapCheckPlugin::PanelWindowProc(LRESULT& result, HWND hWnd, UINT msg, WPARA
 			if((HWND)lParam == checkBoxs[12])
 			{
 				errorSelectedByUser[12] = (int)SendMessage(checkBoxs[12],BM_GETCHECK,0,0);
+			}
+			if((HWND)lParam == checkBox[13])
+			{
+				errorSelectedByUser[13] = (int)SendMessage(checkBox[13],BM_GETCHECK,0,0);
 			}
 			if((HWND)lParam == previousPageButton)
 			{
@@ -378,12 +383,12 @@ ASErr MapCheckPlugin::ShutdownPlugin( SPInterfaceMessage *message )
 	return kNoErr;
 }
 
-//ÃÌº”≤Àµ•
+//Ê∑ªÂä†ËèúÂçï
 ASErr MapCheckPlugin::AddMenus(SPInterfaceMessage* message)
 {
 	ASErr error = kNoErr;
 
-	// ◊œ»ÃÌº”“ª∏ˆ≤Àµ•œÓ
+	//È¶ñÂÖàÊ∑ªÂä†‰∏Ä‰∏™ËèúÂçïÈ°π
 	AIPlatformAddMenuItemDataUS throwAwayMenuData;
 	throwAwayMenuData.groupName = kWindowUtilsMenuGroup;
 	throwAwayMenuData.itemText = ai::UnicodeString("MapCheck");
@@ -392,11 +397,11 @@ ASErr MapCheckPlugin::AddMenus(SPInterfaceMessage* message)
 	if(error)
 		goto error;
 
-	//ÃÌº”◊”≤Àµ•◊È
+	//Ê∑ªÂä†Â≠êËèúÂçïÁªÑ
 	AIMenuGroup throwAwayMenuGroup;
 	sAIMenu->AddMenuGroupAsSubMenu(kSecondMenuGroup,0,throwAwayAIMenu,&throwAwayMenuGroup);
 
-	//œÚ◊”≤Àµ•◊Èƒ⁄ÃÌº”≤Àµ•œÓ
+	//ÂêëÂ≠êËèúÂçïÁªÑÂÜÖÊ∑ªÂä†ËèúÂçïÈ°π
 	throwAwayMenuData.groupName = kSecondMenuGroup;
 	throwAwayMenuData.itemText = ai::UnicodeString("ChooseMap");
 	error = sAIMenu->AddMenuItem(message->d.self,NULL,&throwAwayMenuData,0,&fChooseMapMenu);
@@ -424,7 +429,7 @@ error:
 	return error;
 }
 
-//∆Ù∂ØÀ˘—°≤Àµ•œÓµƒπ¶ƒ‹
+//ÂêØÂä®ÊâÄÈÄâËèúÂçïÈ°πÁöÑÂäüËÉΩ
 ASErr MapCheckPlugin::GoMenuItem(AIMenuMessage* message)
 {
 	
@@ -437,7 +442,7 @@ ASErr MapCheckPlugin::GoMenuItem(AIMenuMessage* message)
 	else if(message->menuItem == fAnalyseMapMenu)
 	{
 		AnalyseMap(greenLayer,blueLayer,brownLayer,blackLayer);
-		sAIUser->MessageAlert(ai::UnicodeString("∑÷ŒˆÕÍ≥…£°"));
+		sAIUser->MessageAlert(ai::UnicodeString("ÂàÜÊûêÂÆåÊàêÔºÅ"));
 	}
 	else if(message->menuItem == fCheckErrorMenu)
 	{
@@ -475,44 +480,44 @@ ASErr MapCheckPlugin::AnalyseMap(GreenLayer& greenLayer,BlueLayer& blueLayer,Bro
 {
 	ASErr error = kNoErr;
 
-	ai::int32 layerListCount;//Õº≤„¡–±Ì ˝
-	ai::int32 layerCount;//“ª∏ˆÕº≤„¡–±Ì÷–µƒÕº≤„ ˝
+	ai::int32 layerListCount;//ÂõæÂ±ÇÂàóË°®Êï∞
+	ai::int32 layerCount;//‰∏Ä‰∏™ÂõæÂ±ÇÂàóË°®‰∏≠ÁöÑÂõæÂ±ÇÊï∞
 
-	AILayerList list;//Õº≤„¡–±Ì
-	AILayerHandle layer;//Õº≤„
+	AILayerList list;//ÂõæÂ±ÇÂàóË°®
+	AILayerHandle layer;//ÂõæÂ±Ç
 
-	AIArtHandle path;//¬∑æ∂
+	AIArtHandle path;//Ë∑ØÂæÑ
 	
-	//ªÒ»°¬∑æ∂
-	error = sAILayerList->Count(&layerListCount);//ªÒ»°
+	//Ëé∑ÂèñË∑ØÂæÑ
+	error = sAILayerList->Count(&layerListCount);//Ëé∑Âèñ
 	error = sAILayerList->GetFirst(&list);
 	error = sAILayerList->CountLayers(list,&layerCount);
 	error = sAILayerList->GetFirstLayer(list,&layer);
 	error = sAIArt->GetFirstArtOfLayer(layer,&path);
-	error = sAIArt->GetArtFirstChild(path,&path);//ªÒ»°µ⁄“ªÃı¬∑æ∂
+	error = sAIArt->GetArtFirstChild(path,&path);//Ëé∑ÂèñÁ¨¨‰∏ÄÊù°Ë∑ØÂæÑ
 
-	// ’ºØ¬Ã∞Ê–≈œ¢
+	//Êî∂ÈõÜÁªøÁâà‰ø°ÊÅØ
 	greenLayer.GetPathOfLayer(path);
 
-	//Ω¯»Î¿∂∞ÊÕº≤„
+	//ËøõÂÖ•ËìùÁâàÂõæÂ±Ç
 	error = sAILayer->GetNextLayer(layer,&layer);
 	error = sAIArt->GetFirstArtOfLayer(layer,&path);
 	error = sAIArt->GetArtFirstChild(path,&path);
-	// ’ºØ¿∂∞Ê–≈œ¢
+	//Êî∂ÈõÜËìùÁâà‰ø°ÊÅØ
 	blueLayer.GetPathOfLayer(path);
 
-	//Ω¯»Î◊ÿ∞ÊÕº≤„
+	//ËøõÂÖ•Ê£ïÁâàÂõæÂ±Ç
 	error = sAILayer->GetNextLayer(layer,&layer);
 	error = sAIArt->GetFirstArtOfLayer(layer,&path);
 	error = sAIArt->GetArtFirstChild(path,&path);
-	// ’ºØ◊ÿ∞Ê–≈œ¢
+	//Êî∂ÈõÜÊ£ïÁâà‰ø°ÊÅØ
 	brownLayer.GetPathOfLayer(path);
 
-	//Ω¯»Î∫⁄∞ÊÕº≤„
+	//ËøõÂÖ•ÈªëÁâàÂõæÂ±Ç
 	error = sAILayer->GetNextLayer(layer,&layer);
 	error = sAIArt->GetFirstArtOfLayer(layer,&path);
 	error = sAIArt->GetArtFirstChild(path,&path);
-	// ’ºØ∫⁄∞Ê–≈œ¢
+	//Êî∂ÈõÜÈªëÁâà‰ø°ÊÅØ
 	blackLayer.GetPathOfLayer(path);
 
 	return error;
@@ -573,6 +578,10 @@ ASErr MapCheckPlugin::CheckError(GreenLayer greenLayer,BlueLayer blueLayer,Brown
 	if(errorSelectedByUser[12]==1&&errorCheckedByUser[12]==0)
 	{
 		blackLayer.CheckError13(collectError);
+	}
+	if(errorSelectedByUser[13]==1&&errorCheckedByUser[13]==0)
+	{
+		brownLayer.CheckError14(collectError);
 	}
 
 	return error;
