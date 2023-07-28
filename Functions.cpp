@@ -29,7 +29,7 @@ AIBoolean JudgePath1InsidePath2(MyPath path1,MyPath path2)
 
 AIBoolean JudgeLineIntersectLine(Line line1, Line line2)
 {
-	 //¿ìËÙÅÅ³âÊµÑé
+	 //å¿«é€Ÿæ’æ–¥å®éªŒ
     if ((line1.x1 > line1.x2 ? line1.x1 : line1.x2) < (line2.x1 < line2.x2 ? line2.x1 : line2.x2) ||
         (line1.y1 > line1.y2 ? line1.y1 : line1.y2) < (line2.y1 < line2.y2 ? line2.y1 : line2.y2) ||
         (line2.x1 > line2.x2 ? line2.x1 : line2.x2) < (line1.x1 < line1.x2 ? line1.x1 : line1.x2) ||
@@ -37,7 +37,7 @@ AIBoolean JudgeLineIntersectLine(Line line1, Line line2)
     {
         return false;
     }
-    //¿çÁ¢ÊµÑé
+    //è·¨ç«‹å®éªŒ
     if ((((line1.x1 - line2.x1)*(line2.y2 - line2.y1) - (line1.y1 - line2.y1)*(line2.x2 - line2.x1))*
         ((line1.x2 - line2.x1)*(line2.y2 - line2.y1) - (line1.y2 - line2.y1)*(line2.x2 - line2.x1))) >= 0 ||
         (((line2.x1 - line1.x1)*(line1.y2 - line1.y1) - (line2.y1 - line1.y1)*(line1.x2 - line1.x1))*
@@ -86,7 +86,7 @@ AIBoolean JudgePathIntersectPath(MyPath path1,MyPath path2)
 
 AIBoolean JudgePathIntersectPath2(MyPath path1,MyPath path2)
 {
-	//ÒòÎªpath2Îª¶à±ßĞÎ£¬¹ÊÏÈÅĞ¶Ïpath1ÖĞÊÇ·ñÓĞÃªµãÔÚpath2ÖĞ£¬ÈôÓĞÔòÔÚ£¬·ñÔò½øÈëÏÂÒ»ÅĞ¶Ï
+	//å› ä¸ºpath2ä¸ºå¤šè¾¹å½¢ï¼Œæ•…å…ˆåˆ¤æ–­path1ä¸­æ˜¯å¦æœ‰é”šç‚¹åœ¨path2ä¸­ï¼Œè‹¥æœ‰åˆ™åœ¨ï¼Œå¦åˆ™è¿›å…¥ä¸‹ä¸€åˆ¤æ–­
 	for(ai::int32 i = 0;i<path1.segmentNum;i++)
 	{
 		if(JudgeSegmentInPath(path1.segment[i],path2))
@@ -155,7 +155,7 @@ AIBoolean OtherWhiteMatching(MyPath path1,MyPath path2)
 	if(path1.area!=path2.area)
 		return false;
 
-	//´Ë´¦½ö×ö¼òµ¥ÅĞ¶Ï£¬¾«È·ÅĞ¶Ï¿ÉÒÔÓÃ×ø±êÈ¥¶ÔÓ¦¡£
+	//æ­¤å¤„ä»…åšç®€å•åˆ¤æ–­ï¼Œç²¾ç¡®åˆ¤æ–­å¯ä»¥ç”¨åæ ‡å»å¯¹åº”ã€‚
 	return true;
 }
 
@@ -216,4 +216,61 @@ AIBoolean JudgeSegmentInCircle(AIPathSegment segment,MyPath circle)
 AIReal round(AIReal r)
 {
 	return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
+}
+
+double segmentLength(Line l)
+{
+	double dx = l.x1 - l.x2;
+    double dy = l.y1 - l.y2;
+    return std::sqrt(dx * dx + dy * dy);
+}
+
+double pointToSegmentDistance(AIReal x,AIReal y,Line l)
+{
+	double len=segmentLength(l);
+	double t =((x-l.x1)*(l.x2-l.x1)+(y-l.y1)*(l.y2-l.y1))/len*len;
+	if(t<0.0)
+		return std::sqrt((x-l.x1)*(x-l.x1)+(y-l.y1)*(y-l.y1));
+	if(t>1.0)
+		return std::sqrt((x-l.x2)*(x-l.x2)+(y-l.y2)*(y-l.y2));
+
+	AIReal m=l.x1+t*(l.x2-l.x1);
+	AIReal n=l.y1+t*(l.y2-l.y1);
+	return std::sqrt((x-m)*(x-m)+(y-n)*(y-n));
+}
+
+double shortestDistanceBetweenPolylines(MyPath polyline1,MyPath polyline2)
+{
+	double shortestDist = 0xfff;
+	// éå†ç¬¬ä¸€æ¡æŠ˜çº¿ä¸Šçš„æ‰€æœ‰çº¿æ®µ
+	for (size_t i = 0; i < polyline1.segmentNum - 1; ++i)
+	{
+		AIReal p1x=polyline1.segment[i].p.h;
+		AIReal p1y=polyline1.segment[i].p.v;
+		AIReal p2x=polyline1.segment[i+1].p.h;
+		AIReal p2y=polyline1.segment[i+1].p.v;
+		Line L1={p1x,p1y,p2x,p2y};
+		// éå†ç¬¬äºŒæ¡æŠ˜çº¿ä¸Šçš„æ‰€æœ‰çº¿æ®µ
+		for (size_t j = 0; j < polyline2.segmentNum - 1; ++j)
+		{
+			AIReal q1x=polyline1.segment[i].p.h;
+			AIReal q1y=polyline1.segment[i].p.v;
+			AIReal q2x=polyline1.segment[i+1].p.h;
+			AIReal q2y=polyline1.segment[i+1].p.v;
+			Line L2={q1x,q1y,q2x,q2y};
+
+			// è®¡ç®—çº¿æ®µ p1p2 å’Œ q1q2 ä¹‹é—´çš„è·ç¦»
+			double dist=pointToSegmentDistance(p1x,p1y,L2);
+			dist = min(dist,pointToSegmentDistance(p2x,p2y,L2));
+			dist = min(dist,pointToSegmentDistance(q1x,q1y,L1));
+			dist = min(dist,pointToSegmentDistance(q2x,q2y,L1));
+
+			// æ›´æ–°æœ€çŸ­è·ç¦»
+            if (dist < shortestDist) 
+			{
+                shortestDist = dist;
+            }
+		}
+	}
+	return shortestDist;
 }
