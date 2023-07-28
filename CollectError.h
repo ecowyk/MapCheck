@@ -13,6 +13,12 @@
 #include "MapCheckSuites.h"
 #include "Structs.h"
 #include <vector>
+#include <map>
+#include <iostream>
+
+const ai::int32 ErrorNumMax = 100;
+const ai::int32 ErrorNumPerPage = 10;
+const ai::int32 ErrorTypeNum = 13;
 
 using namespace std;
 class CollectError
@@ -22,6 +28,21 @@ public:
 	CollectError()
 	{
 		ErrorNum = 0;
+		CurPage = 0;
+		PageNum = 0;
+		ErrorTypeList.insert(make_pair(1,"面积小于25平方毫米，改点状"));
+		ErrorTypeList.insert(make_pair(2,"至少配置两个符号"));
+		ErrorTypeList.insert(make_pair(3,"小于4平方厘米的不加性质注记"));
+		ErrorTypeList.insert(make_pair(4,"绿色多边形压在路上"));
+		ErrorTypeList.insert(make_pair(5,"电力线半个符号应舍弃"));
+		ErrorTypeList.insert(make_pair(6,"水压在电线上"));
+		ErrorTypeList.insert(make_pair(7,"等高线遇双线河应断开"));
+		ErrorTypeList.insert(make_pair(8,"等高线与河流套合"));
+		ErrorTypeList.insert(make_pair(9,"道路压盖关系不正确-1"));
+		ErrorTypeList.insert(make_pair(10,"道路压盖关系不正确-2"));
+		ErrorTypeList.insert(make_pair(11,"河压在路上是否有桥梁-1"));
+		ErrorTypeList.insert(make_pair(12,"河压在路上是否有桥梁-2"));
+		ErrorTypeList.insert(make_pair(13,"重版"));
 	}
 	//析构函数
 	~CollectError(){};
@@ -36,7 +57,7 @@ public:
 		电力线半个符号应舍弃            5
 		水压在电线上                    6
 		等高线遇双线河应断开            7
-		等高线与河流套合                8（没太理解怎么做）
+		等高线与河流套合                8
 		道路压盖关系不正确-1            9
 		道路压盖关系不正确-2            10
 		河压在路上是否有桥梁-1          11
@@ -121,8 +142,11 @@ public:
      	}
 
     }
-private:
+public:
 	vector<ErrorInfo> errors;//错误数组
+	map<ai::int32,string> ErrorTypeList;
 	ai::int32 ErrorNum;//错误数量
+	ai::int32 CurPage;
+	ai::int32 PageNum;
 };
 #endif
