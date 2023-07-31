@@ -2,7 +2,6 @@
 #include "MapCheckPlugin.h"
 #include "MapCheckSuites.h"
 
-
 Plugin* AllocatePlugin(SPPluginRef pluginRef)
 {
 	return new MapCheckPlugin(pluginRef);
@@ -11,13 +10,6 @@ Plugin* AllocatePlugin(SPPluginRef pluginRef)
 void FixupReload(Plugin* plugin)
 {
 	MapCheckPlugin::FixupVTable((MapCheckPlugin*) plugin);
-}
-
-ASErr ChooseMap()
-{
-	ASErr error = kNoErr;
-
-	return error;
 }
 
 ASErr AnalyseMap(GreenLayer& greenLayer,BlueLayer& blueLayer,BrownLayer& brownLayer,BlackLayer& blackLayer)
@@ -369,78 +361,6 @@ int RegisterCheckErrWnd(HINSTANCE hInstance,HWND hwnd)
 	return msg.wParam;
 }
 
-//LRESULT CALLBACK CheckErrWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
-//{
-//	switch (message)
-//	{
-//	case WM_PAINT:
-//	{
-//		PAINTSTRUCT ps;
-//		HDC hdc = ::BeginPaint(hwnd, &ps);
-//		::EndPaint(hwnd, &ps);
-//		return 0;
-//	}
-//	case WM_CREATE:
-//	{
-//		for(ai::int32 i = 0;i<round(ErrorTypeNum/2);i++)
-//		{
-//			errTypeCheckBox[i] = CreateWindowEx(0,"BUTTON",collectError.ErrorTypeList[i+1].c_str(),WS_VISIBLE | WS_CHILD | WS_BORDER | BS_AUTOCHECKBOX | BS_LEFTTEXT,10,10+i*50,350,30,hwnd,NULL,hInstance,NULL);
-//		}
-//		for(ai::int32 i = round(ErrorTypeNum/2);i<ErrorTypeNum;i++)
-//		{
-//			errTypeCheckBox[i] = CreateWindowEx(0,"BUTTON",collectError.ErrorTypeList[i].c_str(),WS_VISIBLE | WS_CHILD | WS_BORDER | BS_AUTOCHECKBOX | BS_LEFTTEXT,400,10+(i-round(ErrorTypeNum/2))*50,350,30,hwnd,NULL,hInstance,NULL);
-//		}
-//		selectAll = CreateWindowEx(0,"BUTTON","全选",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_PUSHBUTTON | BS_CENTER,50,round(ErrorTypeNum/2)*50,100,30,hwnd,NULL,hInstance,NULL);
-//		deselectAll = CreateWindowEx(0,"BUTTON","取消全选",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_PUSHBUTTON | BS_CENTER,200,round(ErrorTypeNum/2)*50,200,30,hwnd,NULL,hInstance,NULL);
-//		check = CreateWindowEx(0,"BUTTON","开始检测",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_PUSHBUTTON | BS_CENTER,500,round(ErrorTypeNum/2)*50,200,30,hwnd,NULL,hInstance,NULL);
-//		return 0;
-//	}
-//	case WM_SIZE:
-//	{
-//		return 0;
-//	}
-//	case WM_COMMAND:
-//	{
-//		for(ai::int32 i = 0;i<ErrorTypeNum;i++)
-//		{
-//			if((HWND)lParam == errTypeCheckBox[i])
-//			{
-//				errorSelectedByUser[i] = SendMessage(errTypeCheckBox[i],BM_GETCHECK,0,0);
-//			}
-//		}
-//		if((HWND)lParam == selectAll)
-//		{
-//			for(ai::int32 i = 0;i<ErrorTypeNum;i++)
-//			{
-//				errorSelectedByUser[i] = 1;
-//				SendMessage(errTypeCheckBox[i],BM_SETCHECK,BST_CHECKED,0);
-//			}
-//		}
-//		if((HWND)lParam == deselectAll)
-//		{
-//			for(ai::int32 i = 0;i<ErrorTypeNum;i++)
-//			{
-//				errorSelectedByUser[i] = 0;
-//				SendMessage(errTypeCheckBox[i],BM_SETCHECK,BST_UNCHECKED,0);
-//			}
-//		}
-//		if((HWND)lParam == check)
-//		{
-//			::SendMessageA(hwnd,WM_CLOSE,0,0);
-//			CheckError(greenLayer,blueLayer,brownLayer,blackLayer,collectError,errorSelectedByUser,errorCheckedByUser);
-//		}
-//		return 0;
-//	}
-//	case WM_DESTROY:
-//	{
-//		::PostQuitMessage(0);
-//		return 0;
-//	}
-//	}
-//
-//	return ::DefWindowProc(hwnd, message, wParam, lParam);
-//}
-
 MapCheckPlugin::MapCheckPlugin(SPPluginRef pluginRef) :
 	Plugin(pluginRef)
 {
@@ -466,21 +386,6 @@ ASErr MapCheckPlugin::StartupPlugin( SPInterfaceMessage *message )
 		saveVscrollPos = 0;
 	}
 	hInstance = GetModuleHandle(0);
-	/*AISize pnSize = {240, 320};
-	error = sAIPanel->Create(fPluginRef, ai::UnicodeString("Third Party Panel"), ai::UnicodeString("Third Party Panel"), 3, pnSize, true, NULL, this, fPanel);
-	if (error)
-		return error;
-	AIPanelPlatformWindow hDlg = NULL;
-	error = sAIPanel->GetPlatformWindow(fPanel, hDlg);
-	hInstance = (HINSTANCE)GetWindowLongPtr(hDlg,GWLP_HINSTANCE);
-
-	error = sAIPanel->Create(fPluginRef, ai::UnicodeString("Third Party Panel"), ai::UnicodeString("Third Party Panel"), 3, pnSize, true, NULL, this, fPanel2);
-	if (error)
-		return error;
-	AIPanelPlatformWindow hDlg2 = NULL;
-	error = sAIPanel->GetPlatformWindow(fPanel2, hDlg2);
-	hInstance2 = (HINSTANCE)GetWindowLongPtr(hDlg2,GWLP_HINSTANCE);*/
-
 	return error;
 }
 
@@ -511,12 +416,6 @@ ASErr MapCheckPlugin::AddMenus(SPInterfaceMessage* message)
 
 	//向子菜单组内添加菜单项
 	throwAwayMenuData.groupName = kSecondMenuGroup;
-	throwAwayMenuData.itemText = ai::UnicodeString("ChooseMap");
-	error = sAIMenu->AddMenuItem(message->d.self,NULL,&throwAwayMenuData,0,&fChooseMapMenu);
-	if(error)
-		goto error;
-
-	throwAwayMenuData.groupName = kSecondMenuGroup;
 	throwAwayMenuData.itemText = ai::UnicodeString("AnalyseMap");
 	error = sAIMenu->AddMenuItem(message->d.self,NULL,&throwAwayMenuData,0,&fAnalyseMapMenu);
 	if(error)
@@ -529,6 +428,12 @@ ASErr MapCheckPlugin::AddMenus(SPInterfaceMessage* message)
 		goto error;
 
 	throwAwayMenuData.groupName = kSecondMenuGroup;
+	throwAwayMenuData.itemText = ai::UnicodeString("DisplayError");
+	error = sAIMenu->AddMenuItem(message->d.self,NULL,&throwAwayMenuData,0,&fDisplayErrorMenu);
+	if(error)
+		goto error;
+
+	throwAwayMenuData.groupName = kSecondMenuGroup;
 	throwAwayMenuData.itemText = ai::UnicodeString("GenerateReoprt");
 	error = sAIMenu->AddMenuItem(message->d.self,NULL,&throwAwayMenuData,0,&fGenerateReportMenu);
 	if(error)
@@ -537,32 +442,33 @@ error:
 	return error;
 }
 
-
 //启动所选菜单项的功能
 ASErr MapCheckPlugin::GoMenuItem(AIMenuMessage* message)
 {
 	
 	ASErr error = kNoErr;
 
-    if(message->menuItem == fChooseMapMenu)
-	{
-		ChooseMap();
-	}
-	else if(message->menuItem == fAnalyseMapMenu)
+	if(message->menuItem == fAnalyseMapMenu)
 	{
 		AnalyseMap(greenLayer,blueLayer,brownLayer,blackLayer);
 
+		//进度条
 		sAIUser->MessageAlert(ai::UnicodeString("分析完成！"));
 	}
 	else if(message->menuItem == fCheckErrorMenu)
 	{
 		flag = 0;
 		RegisterCheckErrWnd(hInstance,checkErrWnd);
+		//进度条
 	}
-	else if(message->menuItem == fGenerateReportMenu)
+	else if(message->menuItem == fDisplayErrorMenu)
 	{
 		flag = 1;
 		RegisterErrList(hInstance,errList);
+	}
+	else if(message->menuItem == fGenerateReportMenu)
+	{
+		
     }
 	return error;
 

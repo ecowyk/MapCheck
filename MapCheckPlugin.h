@@ -32,7 +32,7 @@ GreenLayer greenLayer;
 BlueLayer blueLayer;
 BrownLayer brownLayer;
 BlackLayer blackLayer;
-ASErr ChooseMap();
+
 ASErr AnalyseMap(GreenLayer& greenLayer,BlueLayer& blueLayer,BrownLayer& brownLayer,BlackLayer& blackLayer);
 ASErr CheckError(GreenLayer greenLayer,BlueLayer blueLayer,BrownLayer brownLayer,BlackLayer blackLayer,CollectError& collectError,AIBoolean errorSelectedByUser[ErrorTypeNum],AIBoolean errorCheckedByUser[ErrorTypeNum]);
 ASErr GenerateReport(CollectError collectError);
@@ -88,9 +88,10 @@ public:
 	//启动所选菜单项的功能
 	ASErr GoMenuItem(AIMenuMessage* message);
 
-	AIMenuItemHandle fChooseMapMenu;//用户选择需要检测的地图，点击该项，唤起文件选择窗口
+	//AIMenuItemHandle fChooseMapMenu;//用户选择需要检测的地图，点击该项，唤起文件选择窗口
 	AIMenuItemHandle fAnalyseMapMenu;//获取地图数据，需要添加进度条
 	AIMenuItemHandle fCheckErrorMenu;//检查地图错误，要有用户界面，如复选框，选择需要检测的错误
+	AIMenuItemHandle fDisplayErrorMenu;//呈现错误信息，高亮并居中显示错误
 	AIMenuItemHandle fGenerateReportMenu;//生成错误报告
 };
 

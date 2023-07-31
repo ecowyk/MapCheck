@@ -296,7 +296,7 @@ ASErr GetPathCenter(AIArtHandle path, AIRealPoint& center)
 		center.h += segment[i].p.h;
 		center.v += segment[i].p.v;
 	}
-	center.h = center.h / segmentNum + 2500;
-	center.v = center.v / segmentNum - 3000;
+	center.h = center.h / segmentNum;
+	center.v = center.v / segmentNum;
 	return error;
 }
