@@ -5,7 +5,7 @@
 #include "Suites.hpp"
 
 #include "AIPanel.h"
-
+#include "AIDocumentView.h"
 // AI suite headers
 
 // Suite externs
@@ -18,4 +18,5 @@ extern "C" AILayerSuite*            sAILayer;
 extern "C" AIArtSuite*              sAIArt;
 extern "C" AIPathStyleSuite*        sAIPathStyle;
 extern "C" AIPanelSuite*            sAIPanel;
+extern "C" AIDocumentViewSuite*     sAIDocumentView;
 #endif

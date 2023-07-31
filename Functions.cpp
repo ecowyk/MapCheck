@@ -1,5 +1,7 @@
 #include "IllustratorSDK.h"
+#include "MapCheckSuites.h"
 #include "Functions.h"
+
 AIBoolean JudgePath1InsidePath2(MyPath path1,MyPath path2)
 {
 	
@@ -94,7 +96,14 @@ AIBoolean JudgePathIntersectPath2(MyPath path1,MyPath path2)
 			return true;
 		}
 	}
-	JudgePathIntersectPath(path1,path2);
+	if(JudgePathIntersectPath(path1,path2))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 AIBoolean JudgePathOthogonal(MyPath path1,MyPath path2)
@@ -216,4 +225,78 @@ AIBoolean JudgeSegmentInCircle(AIPathSegment segment,MyPath circle)
 AIReal round(AIReal r)
 {
 	return (r > 0.0) ? floor(r + 0.5) : ceil(r - 0.5);
+}
+
+AIReal segmentLength(Line l)
+{
+	double dx = l.x1 - l.x2;
+    double dy = l.y1 - l.y2;
+    return std::sqrt(dx * dx + dy * dy);
+}
+
+AIReal pointToSegmentDistance(AIReal x,AIReal y,Line l)
+{
+	double len=segmentLength(l);
+	double t =((x-l.x1)*(l.x2-l.x1)+(y-l.y1)*(l.y2-l.y1))/len*len;
+	if(t<0.0)
+		return std::sqrt((x-l.x1)*(x-l.x1)+(y-l.y1)*(y-l.y1));
+	if(t>1.0)
+		return std::sqrt((x-l.x2)*(x-l.x2)+(y-l.y2)*(y-l.y2));
+
+	AIReal m=l.x1+t*(l.x2-l.x1);
+	AIReal n=l.y1+t*(l.y2-l.y1);
+	return std::sqrt((x-m)*(x-m)+(y-n)*(y-n));
+}
+
+AIReal shortestDistanceBetweenPolylines(MyPath polyline1,MyPath polyline2)
+{
+	double shortestDist = 0xfff;
+	// 遍历第一条折线上的所有线段
+	for (size_t i = 0; i < polyline1.segmentNum - 1; ++i)
+	{
+		AIReal p1x=polyline1.segment[i].p.h;
+		AIReal p1y=polyline1.segment[i].p.v;
+		AIReal p2x=polyline1.segment[i+1].p.h;
+		AIReal p2y=polyline1.segment[i+1].p.v;
+		Line L1={p1x,p1y,p2x,p2y};
+		// 遍历第二条折线上的所有线段
+		for (size_t j = 0; j < polyline2.segmentNum - 1; ++j)
+		{
+			AIReal q1x=polyline1.segment[i].p.h;
+			AIReal q1y=polyline1.segment[i].p.v;
+			AIReal q2x=polyline1.segment[i+1].p.h;
+			AIReal q2y=polyline1.segment[i+1].p.v;
+			Line L2={q1x,q1y,q2x,q2y};
+
+			// 计算线段 p1p2 和 q1q2 之间的距离
+			double dist=pointToSegmentDistance(p1x,p1y,L2);
+			dist = dist<pointToSegmentDistance(p2x,p2y,L2) ? dist : pointToSegmentDistance(p2x,p2y,L2);
+			dist = dist<pointToSegmentDistance(q1x,q1y,L1) ? dist : pointToSegmentDistance(q1x,q1y,L1);
+			dist = dist<pointToSegmentDistance(q2x,q2y,L1) ? dist : pointToSegmentDistance(q2x,q2y,L1);
+
+			// 更新最短距离
+            if (dist < shortestDist) 
+			{
+                shortestDist = dist;
+            }
+		}
+	}
+	return shortestDist;
+}
+
+ASErr GetPathCenter(AIArtHandle path, AIRealPoint& center)
+{
+	ASErr error = kNoErr;
+	AIPathSegment segment[segmentNumMAX];
+	ai::int16 segmentNum;
+	sAIPath->GetPathSegmentCount(path,&segmentNum);
+	sAIPath->GetPathSegments(path,0,segmentNum,segment);
+	for(ai::int32 i = 0;i<segmentNum;i++)
+	{
+		center.h += segment[i].p.h;
+		center.v += segment[i].p.v;
+	}
+	center.h = center.h / segmentNum + 2500;
+	center.v = center.v / segmentNum - 3000;
+	return error;
 }

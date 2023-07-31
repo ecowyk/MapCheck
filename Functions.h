@@ -4,7 +4,7 @@
 /* Description : This file is used to describe the functions used for  */
 /* the project.                                                        */
 /* Started by zhunan, 2023/7/23                                        */
-/* Updated by zhunan, 2023/7/24                                        */
+/* Updated by eco, 2023/7/28                                           */
 /*                                                                     */
 /***********************************************************************/
 #ifndef __Functions_h__
@@ -37,5 +37,11 @@ AIBoolean JudgeSegmentInCircle(AIPathSegment segment,MyPath circle);//判断锚点是
 
 AIReal round(AIReal r);//四舍五入
 
+AIReal segmentLength(Line l);//线段长度
 
+AIReal pointToSegmentDistance(AIReal x,AIReal y,Line l);//点到线段距离
+
+AIReal shortestDistanceBetweenPolylines(MyPath polyline1,MyPath polyline2);//折线间最短距离
+
+ASErr GetPathCenter(AIArtHandle path, AIRealPoint& center);//获取路径中心，以便居中显示
 #endif
