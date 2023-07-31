@@ -129,15 +129,19 @@ ai::int32 GreenLayer::GetOtherWhiteNum()
 ASErr GreenLayer::CheckError1(CollectError& collectError)
 {
 	ASErr error = kNoErr;
+	error1num=0;
 	for(ai::int32 i = 0;i<this->greenPolyTooSmall.size();i++)
 	{
 		collectError.AddError(1,this->greenPolyTooSmall[i].layerOrdinalNum,this->greenPolyTooSmall[i].artOrdinalNum);
+		error1num++;
+		
 	}
 	return error;
 }
 ASErr GreenLayer::CheckError2(CollectError &collectError)
 {
 	ASErr error = kNoErr;
+	error2num=0;
 	for(ai::int32 i=0;i<this->greenPolyBig.size();i++)
 	{
 		ai::int32 symbolNum = 0;
@@ -147,7 +151,7 @@ ASErr GreenLayer::CheckError2(CollectError &collectError)
 				symbolNum++;
 		}
 		if(symbolNum<2)
-			collectError.AddError(2,this->greenPolyBig[i].layerOrdinalNum,this->greenPolyBig[i].artOrdinalNum);
+			collectError.AddError(2,this->greenPolyBig[i].layerOrdinalNum,this->greenPolyBig[i].artOrdinalNum),error2num++;
 	}
 	for(ai::int32 i=0;i<this->greenPolySmall.size();i++)
 	{
@@ -158,13 +162,14 @@ ASErr GreenLayer::CheckError2(CollectError &collectError)
 				symbolNum++;
 		}
 		if(symbolNum<2)
-			collectError.AddError(2,this->greenPolySmall[i].layerOrdinalNum,this->greenPolySmall[i].artOrdinalNum);
+			collectError.AddError(2,this->greenPolySmall[i].layerOrdinalNum,this->greenPolySmall[i].artOrdinalNum),error2num++;
 	}
 	return error;
 }
 ASErr GreenLayer::CheckError3(BlackLayer blackLayer,CollectError &collectError)
 {
 	ASErr error = kNoErr;
+	error3num=0;
 	for(ai::int32 i = 0; i <this->greenPolySmall.size();i++)
 	{
 		for(ai::int32 j = 0;j<blackLayer.GetBlackTextNum();j++)
@@ -172,6 +177,8 @@ ASErr GreenLayer::CheckError3(BlackLayer blackLayer,CollectError &collectError)
 			if(JudgePath1InsidePath2(blackLayer.GetBlackTextPath(j),this->greenPolySmall[i]))
 			{
 				collectError.AddError(3,this->greenPolySmall[i].layerOrdinalNum,this->greenPolySmall[i].artOrdinalNum);
+				error3num++;
+				
 				break;
 			}
 		}
@@ -286,6 +293,7 @@ ai::int32 BlueLayer::GetOtherWhiteNum()
 ASErr BlueLayer::CheckError11(BlackLayer blackLayer,BrownLayer brownLayer,CollectError& collectError)
 {
 	ASErr error = kNoErr;
+	error11num=0;
 	//先匹配桥梁
 	vector<MyPath> bridges;//bridge_1
 	for(ai::int32 i = 0;i<blackLayer.GetBridge_1Num();i++)
@@ -317,6 +325,7 @@ ASErr BlueLayer::CheckError11(BlackLayer blackLayer,BrownLayer brownLayer,Collec
 				if(count!=0)
 				{
 					collectError.AddError(11,this->singleLineRiver[j].layerOrdinalNum,this->singleLineRiver[j].artOrdinalNum);
+					error11num++;
 				}
 			}
 		}
@@ -326,6 +335,7 @@ ASErr BlueLayer::CheckError11(BlackLayer blackLayer,BrownLayer brownLayer,Collec
 ASErr BlueLayer::CheckError12(BlackLayer blackLayer,CollectError& collectError)
 {
 	ASErr error = kNoErr;
+	error12num=0;
 	//先桥梁匹配
 	vector<MyPath> bridges;
 	for(ai::int32 i = 0;i<blackLayer.GetBridge_2Num();i++)
@@ -358,6 +368,7 @@ ASErr BlueLayer::CheckError12(BlackLayer blackLayer,CollectError& collectError)
 				if(count!=0)
 				{
 					collectError.AddError(12,this->bluePolyOutline[i].layerOrdinalNum,this->bluePolyOutline[i].artOrdinalNum);
+					error12num++;
 				}
 			}
 		}
@@ -472,6 +483,7 @@ ai::int32 BrownLayer::GetOtherWhiteNum()
 ASErr BrownLayer::CheckError7(BlueLayer blueLayer,CollectError& collectError)
 {
 	ASErr error = kNoErr;
+	error7num=0;
 	//只要等高线与双线河相交即报错
 	for(ai::int32 i=0;i<this->contourLine.size();i++)
 	{
@@ -480,6 +492,7 @@ ASErr BrownLayer::CheckError7(BlueLayer blueLayer,CollectError& collectError)
 			if(JudgePathIntersectPath(this->contourLine[i],blueLayer.GetBluePolyOutLinePath(j)))
 			{
 				collectError.AddError(7,this->contourLine[i].layerOrdinalNum,this->contourLine[i].artOrdinalNum);
+				error7num++;
 				break;
 			}
 		}
@@ -489,6 +502,7 @@ ASErr BrownLayer::CheckError7(BlueLayer blueLayer,CollectError& collectError)
 ASErr BrownLayer::CheckError8(BlueLayer blueLayer,CollectError& collectError)
 {
 	ASErr error = kNoErr;
+	error8num=0;
 	for(ai::int32 i = 0;i<blueLayer.GetSingleLineRiverNum();i++)
 	{
 		for(ai::int32 j = 0;j<this->contourLine.size();j++)
@@ -498,8 +512,25 @@ ASErr BrownLayer::CheckError8(BlueLayer blueLayer,CollectError& collectError)
 				if(!JudgePathOthogonal(blueLayer.GetSingleLineRiverPath(i),this->contourLine[j]))
 				{
 					collectError.AddError(8,this->contourLine[j].layerOrdinalNum,this->contourLine[j].artOrdinalNum);
+					error8num++;
 				}
 			}
+		}
+	}
+	return error;
+}
+
+ASErr BrownLayer::CheckError14(CollectError& collectError)
+{
+	ASErr error = kNoErr;
+	error14num=0;
+	for(ai::int32 i=0;i<this->contourLine.size()-2;i++)
+	{
+		if(shortestDistanceBetweenPolylines(contourLine[i],contourLine[i+1])<0.2)
+		{
+			collectError.AddError(14,this->contourLine[i].layerOrdinalNum,this->contourLine[i].artOrdinalNum);
+			error14num++;
+			
 		}
 	}
 	return error;
@@ -900,7 +931,7 @@ ai::int32 BlackLayer::GetOtherWhiteNum()
 ASErr BlackLayer::CheckError4(GreenLayer greenLayer,CollectError& collectError)
 {
 	ASErr error = kNoErr;
-
+	error4num=0;
 	//后续应该可以优化，此处写的很暴力，思路是先找出与路相交的绿色多边形，然后从blackLayer中的otherWhite匹配对应的绿色多边形，从而判断是否覆盖
 	for(ai::int32 i = 0;i<this->blackMainRoad.size();i++)
 	{
@@ -915,6 +946,7 @@ ASErr BlackLayer::CheckError4(GreenLayer greenLayer,CollectError& collectError)
 						if(this->otherWhite[k].artOrdinalNum<this->blackMainRoad[i].artOrdinalNum)
 						{
 							collectError.AddError(4,greenLayer.GetGreenPolyBigPath(j).layerOrdinalNum,greenLayer.GetGreenPolyBigPath(j).artOrdinalNum);
+							error4num++;
 							break;
 						}
 						break;
@@ -936,6 +968,7 @@ ASErr BlackLayer::CheckError4(GreenLayer greenLayer,CollectError& collectError)
 						if(this->otherWhite[k].artOrdinalNum<this->blackMainRoad[i].artOrdinalNum)
 						{
 							collectError.AddError(4,greenLayer.GetGreenPolySmallPath(j).layerOrdinalNum,greenLayer.GetGreenPolySmallPath(j).artOrdinalNum);
+							error4num++;
 							break;
 						}
 						break;
@@ -950,7 +983,7 @@ ASErr BlackLayer::CheckError4(GreenLayer greenLayer,CollectError& collectError)
 ASErr BlackLayer::CheckError5(CollectError& collectError)
 {
 	ASErr error = kNoErr;
-	
+	error5num=0;
 	vector<MyPath> v;
 	for(ai::int32 i = 0;i<this->wire.size();i++)
 	{
@@ -981,6 +1014,7 @@ ASErr BlackLayer::CheckError5(CollectError& collectError)
 		if(count==3)
 		{
 			collectError.AddError(5,v[i].layerOrdinalNum,v[i].artOrdinalNum);
+			error5num++;
 		}
 	}
 	return error;
@@ -988,7 +1022,7 @@ ASErr BlackLayer::CheckError5(CollectError& collectError)
 ASErr BlackLayer::CheckError6(BlueLayer blueLayer,CollectError& collectError)
 {
 	ASErr error = kNoErr;
-
+	error6num=0;
 	for(ai::int32 i = 0;i<this->wire.size();i++)
 	{
 		for(ai::int32 j = 0;j<blueLayer.GetBluePolyNum();j++)
@@ -1002,6 +1036,7 @@ ASErr BlackLayer::CheckError6(BlueLayer blueLayer,CollectError& collectError)
 						if(this->otherWhite[k].artOrdinalNum<this->wire[i].artOrdinalNum)
 						{
 							collectError.AddError(6,blueLayer.GetBluePolyPath(j).layerOrdinalNum,blueLayer.GetBluePolyPath(j).artOrdinalNum);
+							error6num++;
 							break;
 						}
 						break;
@@ -1016,7 +1051,7 @@ ASErr BlackLayer::CheckError6(BlueLayer blueLayer,CollectError& collectError)
 ASErr BlackLayer::CheckError9(CollectError& collectError)
 {
 	ASErr error = kNoErr;
-
+	error9num++;
 	for(ai::int32 i = 0;i<this->blackSingleLineRoad.size();i++)
 	{
 		for(ai::int32 j = 0;j<this->blackMainRoad.size();j++)
@@ -1024,7 +1059,7 @@ ASErr BlackLayer::CheckError9(CollectError& collectError)
 			if(JudgePathIntersectPath(this->blackSingleLineRoad[i],this->blackMainRoad[j]))
 			{
 				collectError.AddError(9,this->blackSingleLineRoad[i].layerOrdinalNum,this->blackSingleLineRoad[i].artOrdinalNum);
-
+				error9num++;
 			}
 		}
 	}
@@ -1033,6 +1068,7 @@ ASErr BlackLayer::CheckError9(CollectError& collectError)
 ASErr BlackLayer::CheckError10(CollectError& collectError)
 {
 	ASErr error = kNoErr;
+	error10num=0;
 	//暂时有点问题，后续解决
 	for(ai::int32 i = 0;i<this->blackByPassRoad.size();i++)
 	{
@@ -1041,6 +1077,7 @@ ASErr BlackLayer::CheckError10(CollectError& collectError)
 			if(JudgePathIntersectPath(this->blackByPassRoad[i],this->blackMainRoad[j]))
 			{
 				collectError.AddError(10,this->blackByPassRoad[i].layerOrdinalNum,this->blackByPassRoad[i].artOrdinalNum);
+				error10num++;
 			}
 		}
 	}
@@ -1050,7 +1087,7 @@ ASErr BlackLayer::CheckError10(CollectError& collectError)
 ASErr BlackLayer::CheckError13(CollectError& collectError)
 {
 	ASErr error = kNoErr;
-
+	error13num=0;
 	for(ai::int32 i = 0;i<this->stone.size();i++)
 	{
 		for(ai::int32 j = 0;j<this->blackText.size();j++)
@@ -1058,6 +1095,7 @@ ASErr BlackLayer::CheckError13(CollectError& collectError)
 			if(JudgePathIntersectPath2(this->blackText[j],this->stone[i]))
 			{
 				collectError.AddError(13,this->stone[i].layerOrdinalNum,this->stone[i].artOrdinalNum);
+				error13num++;
 				break;
 			}
 		}
