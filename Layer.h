@@ -13,66 +13,68 @@
 #include "CollectError.h"
 #include "Functions.h"
 
-//Í¼²ãÀàµÄ»ùÀà
+//å›¾å±‚ç±»çš„åŸºç±»
 class Layer
 {
 public:
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	Layer(){};
-	//Îö¹¹º¯Êı
+	//ææ„å‡½æ•°
 	virtual ~Layer(){};
-	//Ìí¼Óº¯Êı
+	//æ·»åŠ å‡½æ•°
 	virtual AIBoolean Add(ai::int16 type,MyPath myPath) = 0;
-	//»ñÈ¡Í¼²ãÄÚĞÅÏ¢
+	//è·å–å›¾å±‚å†…ä¿¡æ¯
 	virtual ASErr GetPathOfLayer(AIArtHandle path) = 0;
 };
 class BlackLayer;
 class BrownLayer;
-//ÂÌÉ«Í¼²ã
+//ç»¿è‰²å›¾å±‚
 class GreenLayer:public Layer
 {
 public:
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	GreenLayer(){};
-	//Îö¹¹º¯Êı
+	//ææ„å‡½æ•°
 	~GreenLayer(){};
-	//Ìí¼Óº¯Êı
+	//æ·»åŠ å‡½æ•°
 	AIBoolean Add(ai::int16 type,MyPath myPath);
-	//»ñÈ¡ÂÌÉ«Í¼²ãµÄĞÅÏ¢
+	//è·å–ç»¿è‰²å›¾å±‚çš„ä¿¡æ¯
 	ASErr GetPathOfLayer(AIArtHandle path);
-	//»ñÈ¡ÂÌÉ«¶à±ßĞÎ´óÖĞµÄÂ·¾¶
+	//è·å–ç»¿è‰²å¤šè¾¹å½¢å¤§ä¸­çš„è·¯å¾„
 	MyPath GetGreenPolyBigPath(ai::int32 index);
-	//»ñÈ¡ÂÌÉ«¶à±ßĞÎĞ¡ÖĞµÄÂ·¾¶
+	//è·å–ç»¿è‰²å¤šè¾¹å½¢å°ä¸­çš„è·¯å¾„
 	MyPath GetGreenPolySmallPath(ai::int32 index);
-	//»ñÈ¡ÂÌÉ«¶à±ßĞÎ¹ıĞ¡µÄÂ·¾¶
+	//è·å–ç»¿è‰²å¤šè¾¹å½¢è¿‡å°çš„è·¯å¾„
 	MyPath GetGreenPolyTooSmallPath(ai::int32 index);
-	//»ñÈ¡ÂÌÉ«Ô²ĞÎÖĞµÄÂ·¾¶
+	//è·å–ç»¿è‰²åœ†å½¢ä¸­çš„è·¯å¾„
 	MyPath GetGreenCirclePath(ai::int32 index);
-	//»ñÈ¡°×É«ÆäËûÖĞµÄÂ·¾¶
+	//è·å–ç™½è‰²å…¶ä»–ä¸­çš„è·¯å¾„
 	MyPath GetOtherWhitePath(ai::int32 index);
-	//»ñÈ¡ÂÌÉ«¶à±ßĞÎ´óµÄ´óĞ¡
+	//è·å–ç»¿è‰²å¤šè¾¹å½¢å¤§çš„å¤§å°
 	ai::int32 GetGreenPolyBigNum();
-	//»ñÈ¡ÂÌÉ«¶à±ßĞÎĞ¡µÄ´óĞ¡
+	//è·å–ç»¿è‰²å¤šè¾¹å½¢å°çš„å¤§å°
 	ai::int32 GetGreenPolySmallNum();
-	//»ñÈ¡ÂÌÉ«¶à±ßĞÎ¹ıĞ¡µÄ´óĞ¡
+	//è·å–ç»¿è‰²å¤šè¾¹å½¢è¿‡å°çš„å¤§å°
 	ai::int32 GetGreenPolyTooSmallNum();
-	//»ñÈ¡ÂÌÉ«Ô²ĞÎµÄ´óĞ¡
+	//è·å–ç»¿è‰²åœ†å½¢çš„å¤§å°
 	ai::int32 GetGreenCircleNum();
-	//»ñÈ¡°×É«ÆäËûµÄ´óĞ¡
+	//è·å–ç™½è‰²å…¶ä»–çš„å¤§å°
 	ai::int32 GetOtherWhiteNum();
-	//ÏÂÃæÎª¼ì²é´íÎóµÄº¯Êı
+
+	ai::int32 error1num,error2num,error3num;
+	//ä¸‹é¢ä¸ºæ£€æŸ¥é”™è¯¯çš„å‡½æ•°
 	ASErr CheckError1(CollectError& collectError);//
-	ASErr CheckError2(CollectError& collectError);//ÂÌÉ«¶à±ßĞÎÖÁÉÙÒªÓĞÁ½¸öÅäÖÃ·ûºÅ
-	ASErr CheckError3(BlackLayer blackLayer,CollectError &collectError);//Ãæ»ıĞ¡ÓÚ¹æ¶¨Öµ²»Ó¦ÓĞÎÄ×Ö×¢¼Ç
+	ASErr CheckError2(CollectError& collectError);//ç»¿è‰²å¤šè¾¹å½¢è‡³å°‘è¦æœ‰ä¸¤ä¸ªé…ç½®ç¬¦å·
+	ASErr CheckError3(BlackLayer blackLayer,CollectError &collectError);//é¢ç§¯å°äºè§„å®šå€¼ä¸åº”æœ‰æ–‡å­—æ³¨è®°
 private:
-	vector<MyPath> greenPolyBig;//ÌØµãÎªÎŞstroke£¬ÓĞfill£¬ÑÕÉ«Îª×Ô¶¨ÒåÑÕÉ«£¬tint¡Ö0.85£¬°×É«Ìî³äÎª1£¬0ÎªºÚÉ«,Ãæ»ı´óÓÚ¹æ¶¨Öµ£¬Ó¦ÓĞÎÄ×Ö×¢¼Ç
-	vector<MyPath> greenPolySmall;//²»Ó¦ÓĞÎÄ×Ö×¢¼Ç
-	vector<MyPath> greenPolyTooSmall;//Ó¦¸ÄÎªµã×´
-	vector<MyPath> greenCircle;//ÌØµãÎªÓĞstroke£¬ÎŞfill£¬strokeÑÕÉ«ÎªµØÍ¼ÂÌ£¬Ïß¿íÎª0.34
-	vector<MyPath> otherWhite;//ÌØµãÎªÎŞstroke£¬ÓĞfill£¬tintÎª1
+	vector<MyPath> greenPolyBig;//ç‰¹ç‚¹ä¸ºæ— strokeï¼Œæœ‰fillï¼Œé¢œè‰²ä¸ºè‡ªå®šä¹‰é¢œè‰²ï¼Œtintâ‰ˆ0.85ï¼Œç™½è‰²å¡«å……ä¸º1ï¼Œ0ä¸ºé»‘è‰²,é¢ç§¯å¤§äºè§„å®šå€¼ï¼Œåº”æœ‰æ–‡å­—æ³¨è®°
+	vector<MyPath> greenPolySmall;//ä¸åº”æœ‰æ–‡å­—æ³¨è®°
+	vector<MyPath> greenPolyTooSmall;//åº”æ”¹ä¸ºç‚¹çŠ¶
+	vector<MyPath> greenCircle;//ç‰¹ç‚¹ä¸ºæœ‰strokeï¼Œæ— fillï¼Œstrokeé¢œè‰²ä¸ºåœ°å›¾ç»¿ï¼Œçº¿å®½ä¸º0.34
+	vector<MyPath> otherWhite;//ç‰¹ç‚¹ä¸ºæ— strokeï¼Œæœ‰fillï¼Œtintä¸º1
 
 };
-//À¶É«Í¼²ã
+//è“è‰²å›¾å±‚
 class BlueLayer:public Layer
 {
 public:
@@ -89,6 +91,8 @@ public:
 	ai::int32 GetBluePolyOutLineNum();
 	ai::int32 GetSingleLineRiverNum();
 	ai::int32 GetOtherWhiteNum();
+	
+	ai::int32 error11num,error12num;
 
 	ASErr CheckError11(BlackLayer blackLayer,BrownLayer brownLayer,CollectError& collectError);
 	ASErr CheckError12(BlackLayer blackLayer,CollectError& collectError);
@@ -98,7 +102,7 @@ private:
 	vector<MyPath> singleLineRiver;
 	vector<MyPath> otherWhite;
 };
-//×ØÉ«Í¼²ã
+//æ£•è‰²å›¾å±‚
 class BrownLayer:public Layer
 {
 public:
@@ -116,22 +120,24 @@ public:
 	ai::int32 GetContourLineNum();
 	ai::int32 GetOtherWhiteNum();
 
-	ASErr CheckError7(BlueLayer blueLayer,CollectError& collectError);//¼ì²âµÈ¸ßÏßÓöË«ÏßºÓÊÇ·ñ¶Ï¿ª
-	ASErr CheckError8(BlueLayer blueLayer,CollectError& collectError);//¼ì²éµÈ¸ßÏßÊÇ·ñÓëºÓÁ÷Ì×ºÏ
+	ai::int32 error7num,error8num,error14num;
+
+	ASErr CheckError7(BlueLayer blueLayer,CollectError& collectError);//æ£€æµ‹ç­‰é«˜çº¿é‡åŒçº¿æ²³æ˜¯å¦æ–­å¼€
+	ASErr CheckError8(BlueLayer blueLayer,CollectError& collectError);//æ£€æŸ¥ç­‰é«˜çº¿æ˜¯å¦ä¸æ²³æµå¥—åˆ
 private:
-	vector<MyPath> darkBrownRoad;//Éî×ØÉ«µÀÂ·   shiftDist=0.2
-	vector<MyPath> lightBrownRoad;//Ç³×ØÉ«µÀÂ·   shiftDist = 0.6
-	vector<MyPath> contourLine;//µÈ¸ßÏß    shiftDist = 0
+	vector<MyPath> darkBrownRoad;//æ·±æ£•è‰²é“è·¯   shiftDist=0.2
+	vector<MyPath> lightBrownRoad;//æµ…æ£•è‰²é“è·¯   shiftDist = 0.6
+	vector<MyPath> contourLine;//ç­‰é«˜çº¿    shiftDist = 0
 	vector<MyPath> otherWhite;
 };
-//ºÚÉ«Í¼²ã
+//é»‘è‰²å›¾å±‚
 class BlackLayer:public Layer
 {
 public:
 	BlackLayer(){};
 	~BlackLayer(){};
 	AIBoolean Add(ai::int16 type,MyPath myPath);
-	//ÏÂÃæÈı¸öº¯Êı¾ùÎª»ñÈ¡º¯Êı·şÎñ
+	//ä¸‹é¢ä¸‰ä¸ªå‡½æ•°å‡ä¸ºè·å–å‡½æ•°æœåŠ¡
 	ASErr GetPathOfLayer(AIArtHandle path);
 	void Classify(vector<MyPath> paths);
 	AIBoolean JudgeLineIntersectCircle(MyPath path,MyPath pole);
@@ -161,6 +167,8 @@ public:
 	ai::int32 GetStoneNum();
 	ai::int32 GetOtherWhiteNum();
 
+	ai::int32 error4num,error5num,error6num,error9num,error10num,error13num;
+
 	ASErr CheckError4(GreenLayer greenLayer,CollectError& collectError);
 	ASErr CheckError5(CollectError& collectError);
 	ASErr CheckError6(BlueLayer blueLayer,CollectError& collectError);
@@ -168,17 +176,17 @@ public:
 	ASErr CheckError10(CollectError& collectError);
 	ASErr CheckError13(CollectError& collectError);
 private:
-	vector<MyPath> blackText;//fillÎªºÚÉ«£¬ÎŞstroke
-	vector<MyPath> blackPole;//fillÎªºÚÉ«£¬ÎŞstroke£¬Ö±¾¶Îª0.4mm
-	vector<MyPath> blackDigital;//fillÎªºÚÉ«£¬strokeÒ²ÎªºÚÉ«
-	vector<MyPath> blackMainRoad;//ÎŞfill£¬strokeÎªºÚÉ«£¬Ïß¿í0.34
-	vector<MyPath> blackByPassRoad;//ÎŞfill£¬strokeÎªºÚÉ«£¬Ïß¿í0.28
-	vector<MyPath> blackSingleLineRoad;//ÎŞfill£¬strokeÎªºÚÉ«£¬Ïß¿í0.5669
+	vector<MyPath> blackText;//fillä¸ºé»‘è‰²ï¼Œæ— stroke
+	vector<MyPath> blackPole;//fillä¸ºé»‘è‰²ï¼Œæ— strokeï¼Œç›´å¾„ä¸º0.4mm
+	vector<MyPath> blackDigital;//fillä¸ºé»‘è‰²ï¼Œstrokeä¹Ÿä¸ºé»‘è‰²
+	vector<MyPath> blackMainRoad;//æ— fillï¼Œstrokeä¸ºé»‘è‰²ï¼Œçº¿å®½0.34
+	vector<MyPath> blackByPassRoad;//æ— fillï¼Œstrokeä¸ºé»‘è‰²ï¼Œçº¿å®½0.28
+	vector<MyPath> blackSingleLineRoad;//æ— fillï¼Œstrokeä¸ºé»‘è‰²ï¼Œçº¿å®½0.5669
 	vector<MyPath> wireDirecction;//
 	vector<MyPath> wire;//
-	vector<MyPath> bridge_1;//ÇÅÁº
+	vector<MyPath> bridge_1;//æ¡¥æ¢
 	vector<MyPath> bridge_2;
-	vector<MyPath> stone;//Ê¯Í·£¿
+	vector<MyPath> stone;//çŸ³å¤´ï¼Ÿ
 	vector<MyPath> otherWhite;
 };
 #endif
