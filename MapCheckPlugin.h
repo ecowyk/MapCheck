@@ -27,7 +27,7 @@ void FixupReload(Plugin* plugin);
 	@ingroup MapCheck
 */
 
-CollectError collectError;//´íÎóÊÕ¼¯Àà
+CollectError collectError;//é”™è¯¯æ”¶é›†ç±»
 GreenLayer greenLayer;
 BlueLayer blueLayer;
 BrownLayer brownLayer;
@@ -37,21 +37,22 @@ ASErr AnalyseMap(GreenLayer& greenLayer,BlueLayer& blueLayer,BrownLayer& brownLa
 ASErr CheckError(GreenLayer greenLayer,BlueLayer blueLayer,BrownLayer brownLayer,BlackLayer blackLayer,CollectError& collectError,AIBoolean errorSelectedByUser[ErrorTypeNum],AIBoolean errorCheckedByUser[ErrorTypeNum]);
 ASErr GenerateReport(CollectError collectError);
 
-AIBoolean flag;//µ±Ç°ÊÇÄÄ¸ö´°¿Ú
+AIBoolean flag;//å½“å‰æ˜¯å“ªä¸ªçª—å£
 
-HINSTANCE hInstance;//ÊµÀı¾ä±ú
-HWND errList;//´íÎóÁĞ±í´°¿Ú
-HWND staticText[ErrorNumMax];//´íÎóÃèÊö
-HWND highLightButton[ErrorNumMax];//¸ßÁÁ¾ÓÖĞÏÔÊ¾°´Å¥
-HWND correctedCheckBox[ErrorNumMax];//´íÎóÊÇ·ñ¸ÄÕı
-AIBoolean haveCorrected[ErrorNumMax];//¼ÇÂ¼ÓÃ»§ÒÑ¸ÄÕıµÄ´íÎó
-ai::int32 saveVscrollPos;//¼ÇÂ¼¹ö¶¯ÌõÎ»ÖÃ
+HINSTANCE hInstance;//å®ä¾‹å¥æŸ„
+HWND errList;//é”™è¯¯åˆ—è¡¨çª—å£
+HWND staticText[ErrorNumMax];//é”™è¯¯æè¿°
+HWND highLightButton[ErrorNumMax];//é«˜äº®å±…ä¸­æ˜¾ç¤ºæŒ‰é’®
+HWND correctedCheckBox[ErrorNumMax];//é”™è¯¯æ˜¯å¦æ”¹æ­£
+AIBoolean haveCorrected[ErrorNumMax];//è®°å½•ç”¨æˆ·å·²æ”¹æ­£çš„é”™è¯¯
+ai::int32 saveVscrollPos;//è®°å½•æ»šåŠ¨æ¡ä½ç½®
 
-HWND checkErrWnd;//¼ì²â´íÎó´°¿Ú
-HWND errTypeCheckBox[ErrorTypeNum];//¼ì²â´íÎóÀàĞÍ¸´Ñ¡¿ò
-HWND selectAll,deselectAll,check;//È«Ñ¡£¬È¡ÏûÈ«Ñ¡£¬¿ªÊ¼¼ì²â
-AIBoolean errorSelectedByUser[ErrorTypeNum];//¸´Ñ¡¿òÃæ°åÖĞÓÃ»§Ñ¡ÔñÒª½øĞĞµÄ´íÎó¼ì²é
-AIBoolean errorCheckedByUser[ErrorTypeNum];//ÓÃ»§ÒÑ¾­¼ì²é¹ıµÄ´íÎó
+HWND checkErrWnd;//æ£€æµ‹é”™è¯¯çª—å£
+HWND errTypeCheckBox[ErrorTypeNum];//æ£€æµ‹é”™è¯¯ç±»å‹å¤é€‰æ¡†
+HWND selectAll,deselectAll,check;//å…¨é€‰ï¼Œå–æ¶ˆå…¨é€‰ï¼Œå¼€å§‹æ£€æµ‹
+AIBoolean errorSelectedByUser[ErrorTypeNum];//å¤é€‰æ¡†é¢æ¿ä¸­ç”¨æˆ·é€‰æ‹©è¦è¿›è¡Œçš„é”™è¯¯æ£€æŸ¥
+AIBoolean errorCheckedByUser[ErrorTypeNum];//ç”¨æˆ·å·²ç»æ£€æŸ¥è¿‡çš„é”™è¯¯
+HWND hwndPB;
 LRESULT CALLBACK ErrListWindProc(HWND, UINT, WPARAM, LPARAM);
 int RegisterErrList(HINSTANCE hInstance,HWND hwnd);
 int RegisterCheckErrWnd(HINSTANCE hInstance,HWND hwnd);
@@ -83,15 +84,15 @@ public:
 	*/
 	ASErr ShutdownPlugin( SPInterfaceMessage * message );
 
-	//Ìí¼Ó²Ëµ¥
+	//æ·»åŠ èœå•
 	ASErr AddMenus(SPInterfaceMessage* message);
-	//Æô¶¯ËùÑ¡²Ëµ¥ÏîµÄ¹¦ÄÜ
+	//å¯åŠ¨æ‰€é€‰èœå•é¡¹çš„åŠŸèƒ½
 	ASErr GoMenuItem(AIMenuMessage* message);
 
-	AIMenuItemHandle fChooseMapMenu;//ÓÃ»§Ñ¡ÔñĞèÒª¼ì²âµÄµØÍ¼£¬µã»÷¸ÃÏî£¬»½ÆğÎÄ¼şÑ¡Ôñ´°¿Ú
-	AIMenuItemHandle fAnalyseMapMenu;//»ñÈ¡µØÍ¼Êı¾İ£¬ĞèÒªÌí¼Ó½ø¶ÈÌõ
-	AIMenuItemHandle fCheckErrorMenu;//¼ì²éµØÍ¼´íÎó£¬ÒªÓĞÓÃ»§½çÃæ£¬Èç¸´Ñ¡¿ò£¬Ñ¡ÔñĞèÒª¼ì²âµÄ´íÎó
-	AIMenuItemHandle fGenerateReportMenu;//Éú³É´íÎó±¨¸æ
+	AIMenuItemHandle fChooseMapMenu;//ç”¨æˆ·é€‰æ‹©éœ€è¦æ£€æµ‹çš„åœ°å›¾ï¼Œç‚¹å‡»è¯¥é¡¹ï¼Œå”¤èµ·æ–‡ä»¶é€‰æ‹©çª—å£
+	AIMenuItemHandle fAnalyseMapMenu;//è·å–åœ°å›¾æ•°æ®ï¼Œéœ€è¦æ·»åŠ è¿›åº¦æ¡
+	AIMenuItemHandle fCheckErrorMenu;//æ£€æŸ¥åœ°å›¾é”™è¯¯ï¼Œè¦æœ‰ç”¨æˆ·ç•Œé¢ï¼Œå¦‚å¤é€‰æ¡†ï¼Œé€‰æ‹©éœ€è¦æ£€æµ‹çš„é”™è¯¯
+	AIMenuItemHandle fGenerateReportMenu;//ç”Ÿæˆé”™è¯¯æŠ¥å‘Š
 };
 
 #endif
