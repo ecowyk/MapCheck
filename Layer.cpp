@@ -505,6 +505,20 @@ ASErr BrownLayer::CheckError8(BlueLayer blueLayer,CollectError& collectError)
 	return error;
 }
 
+ASErr BrownLayer::CheckError14(CollectError& collectError)
+{
+	ASErr error = kNoErr;
+	
+	for(ai::int32 i=0;i<this->contourLine.size()-2;i++)
+	{
+		if(shortestDistanceBetweenPolylines(contourLine[i],contourLine[i+1])<0.2)
+		{
+			collectError.AddError(14,this->contourLine[i].layerOrdinalNum,this->contourLine[i].artOrdinalNum);
+		}
+	}
+	return error;
+}
+
 AIBoolean BlackLayer::Add(ai::int16 type,MyPath myPath)
 {
 	switch(type)
