@@ -70,7 +70,6 @@ private:
 	vector<MyPath> greenPolyTooSmall;//应改为点状
 	vector<MyPath> greenCircle;//特点为有stroke，无fill，stroke颜色为地图绿，线宽为0.34
 	vector<MyPath> otherWhite;//特点为无stroke，有fill，tint为1
-
 };
 //蓝色图层
 class BlueLayer:public Layer
@@ -118,6 +117,7 @@ public:
 
 	ASErr CheckError7(BlueLayer blueLayer,CollectError& collectError);//检测等高线遇双线河是否断开
 	ASErr CheckError8(BlueLayer blueLayer,CollectError& collectError);//检查等高线是否与河流套合
+	ASErr CheckError14(CollectError& collectError);//检查等高线间距是否小于0.2mm
 private:
 	vector<MyPath> darkBrownRoad;//深棕色道路   shiftDist=0.2
 	vector<MyPath> lightBrownRoad;//浅棕色道路   shiftDist = 0.6

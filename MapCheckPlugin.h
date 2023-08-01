@@ -7,9 +7,9 @@
 #include "SDKDef.h"
 #include "AIMenuGroups.h"
 #include "Layer.h"
+
 #include "windows.h"
-
-
+#include "commctrl.h"
 
 /**	Creates a new MapCheckPlugin.
 	@param pluginRef IN unique reference to this plugin.
@@ -37,12 +37,17 @@ ASErr AnalyseMap(GreenLayer& greenLayer,BlueLayer& blueLayer,BrownLayer& brownLa
 ASErr CheckError(GreenLayer greenLayer,BlueLayer blueLayer,BrownLayer brownLayer,BlackLayer blackLayer,CollectError& collectError,AIBoolean errorSelectedByUser[ErrorTypeNum],AIBoolean errorCheckedByUser[ErrorTypeNum]);
 ASErr GenerateReport(CollectError collectError);
 
-AIBoolean flag;//当前是哪个窗口
+AIBoolean flag;//当前是哪个窗口,0表示选择错误窗口，1表示错误列表窗口
+AIBoolean flagPB;//用哪个进度条,0表示分析地图，1表示检查错误
+HWND progressBarAnalyse;//分析地图进度条
+ai::int32 progressAnalyse;//分析地图的进度
+HWND progressBarCheck;//检查错误进度条
+ai::int32 progressCheck;//检查错误的进度
 
 HINSTANCE hInstance;//实例句柄
 HWND errList;//错误列表窗口
 HWND staticText[ErrorNumMax];//错误描述
-HWND highLightButton[ErrorNumMax];//高亮居中显示按钮
+//HWND highLightButton[ErrorNumMax];//高亮居中显示按钮
 HWND correctedCheckBox[ErrorNumMax];//错误是否改正
 AIBoolean haveCorrected[ErrorNumMax];//记录用户已改正的错误
 ai::int32 saveVscrollPos;//记录滚动条位置
@@ -52,9 +57,11 @@ HWND errTypeCheckBox[ErrorTypeNum];//检测错误类型复选框
 HWND selectAll,deselectAll,check;//全选，取消全选，开始检测
 AIBoolean errorSelectedByUser[ErrorTypeNum];//复选框面板中用户选择要进行的错误检查
 AIBoolean errorCheckedByUser[ErrorTypeNum];//用户已经检查过的错误
-LRESULT CALLBACK ErrListWindProc(HWND, UINT, WPARAM, LPARAM);
-int RegisterErrList(HINSTANCE hInstance,HWND hwnd);
-int RegisterCheckErrWnd(HINSTANCE hInstance,HWND hwnd);
+LRESULT CALLBACK WindProc(HWND, UINT, WPARAM, LPARAM);
+int RegisterErrList(HINSTANCE hInstance, HWND hwnd);
+int RegisterCheckErrWnd(HINSTANCE hInstance, HWND hwnd);
+void CreateProgressBar(HINSTANCE hInstance, HWND hwnd);
+DWORD WINAPI PBThreadProc(LPVOID lpParameter);
 class MapCheckPlugin : public Plugin
 {
 public:

@@ -3,7 +3,6 @@
 #include "Layer.h"
 AIBoolean GreenLayer::Add(ai::int16 type,MyPath myPath)
 {
-	//è¿™æ˜¯ä¸€æ¡æµ‹è¯•æ³¨é‡Š
 	switch(type)
 	{
 	case 1:this->greenPolyBig.push_back(myPath);return true;break;
@@ -34,23 +33,25 @@ ASErr GreenLayer::GetPathOfLayer(AIArtHandle path)
 			continue;
 		}
 		myPath.artOrdinalNum = curArtNum;
-		error = sAIPathStyle->GetPathStyle(path,&style);//è·å–style
+		error = sAIPathStyle->GetPathStyle(path,&style);//»ñÈ¡style
 		sAIPath->GetPathSegmentCount(path,&myPath.segmentNum);
 		sAIPath->GetPathSegments(path,0,myPath.segmentNum,myPath.segment);
 		sAIPath->GetPathArea(path,&myPath.area);
-		if(style.fillPaint==1&&style.strokePaint==0)//åˆ¤æ–­æ˜¯å¦ä¸ºå¤šè¾¹å½¢
+		if(style.fillPaint==1&&style.strokePaint==0)//ÅĞ¶ÏÊÇ·ñÎª¶à±ßĞÎ
 		{
-			if(style.fill.color.c.c.tint==1)//åŒºåˆ†grennPolyå’ŒotherWhite
+			if(style.fill.color.c.c.tint==1)//Çø·ÖgrennPolyºÍotherWhite
 			{
 				this->Add(5,myPath);
 			}
 			else
 			{
-				error = sAIPath->GetPathArea(path,&area);//è·å–ç»¿è‰²å¤šè¾¹å½¢é¢ç§¯
+				error = sAIPath->GetPathArea(path,&area);//»ñÈ¡ÂÌÉ«¶à±ßĞÎÃæ»ı
 			    area = fabs(area);
-				if(area<areaCheckToPoint)//é¢ç§¯è¿‡å°æ”¹ç‚¹çŠ¶
+				if(area<areaCheckToPoint)//Ãæ»ı¹ıĞ¡¸Äµã×´
+				{
 					this->Add(3,myPath);
-				else if(area>=areaCheckToPoint&&area<areaCheckIfAnnotation)//éœ€æ£€æŸ¥æ˜¯å¦åŠ æ³¨è®°ï¼ˆä¸åº”åŠ ï¼‰
+				}
+				else if(area>=areaCheckToPoint&&area<areaCheckIfAnnotation)//Ğè¼ì²éÊÇ·ñ¼Ó×¢¼Ç£¨²»Ó¦¼Ó£©
 				{
 					this->Add(2,myPath);
 				}
@@ -65,7 +66,7 @@ ASErr GreenLayer::GetPathOfLayer(AIArtHandle path)
 		{
 			this->Add(4,myPath);
 		}
-		//è·å–ä¸‹ä¸€ä¸ª
+		//»ñÈ¡ÏÂÒ»¸ö
 		sAIArt->GetArtSibling(path,&path);
 		curArtNum++;
 	}
@@ -147,7 +148,9 @@ ASErr GreenLayer::CheckError2(CollectError &collectError)
 				symbolNum++;
 		}
 		if(symbolNum<2)
+		{
 			collectError.AddError(2,this->greenPolyBig[i].layerOrdinalNum,this->greenPolyBig[i].artOrdinalNum);
+		}
 	}
 	for(ai::int32 i=0;i<this->greenPolySmall.size();i++)
 	{
@@ -158,7 +161,9 @@ ASErr GreenLayer::CheckError2(CollectError &collectError)
 				symbolNum++;
 		}
 		if(symbolNum<2)
+		{
 			collectError.AddError(2,this->greenPolySmall[i].layerOrdinalNum,this->greenPolySmall[i].artOrdinalNum);
+		}
 	}
 	return error;
 }
@@ -197,7 +202,6 @@ ASErr BlueLayer::GetPathOfLayer(AIArtHandle path)
 	ai::int32 curArtNum = 0;
 	ai::int32 curLayerNum = 1;
 	
-
 	MyPath myPath;
 	myPath.layerOrdinalNum = curLayerNum;
 	AIPathStyle style;
@@ -217,18 +221,26 @@ ASErr BlueLayer::GetPathOfLayer(AIArtHandle path)
 		if(style.strokePaint==0&&style.fillPaint==1)
 		{
 			if(style.fill.color.c.c.tint==1)
+			{
 				this->Add(4,myPath);
+			}
 			else
+			{
 				this->Add(1,myPath);
+			}
 		}
 		else if(style.strokePaint==1&&style.fillPaint==0&&style.stroke.color.c.p.shiftDist==0)
 		{
 
 			if(myPath.segment[0].p.h==myPath.segment[myPath.segmentNum-1].p.h&&
 				myPath.segment[0].p.v==myPath.segment[myPath.segmentNum-1].p.v)
+			{
 				this->Add(2,myPath);
+			}
 			else
+			{
 				this->Add(3,myPath);
+			}
 		}
 		else if(style.strokePaint==1&&style.fillPaint==0&&style.stroke.color.c.p.shiftDist==1&&myPath.segmentNum==2)
 		{
@@ -286,7 +298,7 @@ ai::int32 BlueLayer::GetOtherWhiteNum()
 ASErr BlueLayer::CheckError11(BlackLayer blackLayer,BrownLayer brownLayer,CollectError& collectError)
 {
 	ASErr error = kNoErr;
-	//å…ˆåŒ¹é…æ¡¥æ¢
+	//ÏÈÆ¥ÅäÇÅÁº
 	vector<MyPath> bridges;//bridge_1
 	for(ai::int32 i = 0;i<blackLayer.GetBridge_1Num();i++)
 	{
@@ -298,7 +310,7 @@ ASErr BlueLayer::CheckError11(BlackLayer blackLayer,BrownLayer brownLayer,Collec
 			}
 		}
 	}
-	//è·¯ä¸æ²³ç›¸äº¤åˆ¤æ–­å¹¶æ£€æŸ¥æ¡¥æ¢
+	//Â·ÓëºÓÏà½»ÅĞ¶Ï²¢¼ì²éÇÅÁº
 	for(ai::int32 i = 0;i<brownLayer.GetDarkBrownRoadNum();i++)
 	{
 		for(ai::int32 j = 0;j<this->singleLineRiver.size();j++)
@@ -326,7 +338,7 @@ ASErr BlueLayer::CheckError11(BlackLayer blackLayer,BrownLayer brownLayer,Collec
 ASErr BlueLayer::CheckError12(BlackLayer blackLayer,CollectError& collectError)
 {
 	ASErr error = kNoErr;
-	//å…ˆæ¡¥æ¢åŒ¹é…
+	//ÏÈÇÅÁºÆ¥Åä
 	vector<MyPath> bridges;
 	for(ai::int32 i = 0;i<blackLayer.GetBridge_2Num();i++)
 	{
@@ -338,7 +350,7 @@ ASErr BlueLayer::CheckError12(BlackLayer blackLayer,CollectError& collectError)
 			}
 		}
 	}
-	//è·¯å’Œæ²³çš„ç›¸äº¤åˆ¤æ–­å¹¶æ£€æŸ¥æ¡¥æ¢
+	//Â·ºÍºÓµÄÏà½»ÅĞ¶Ï²¢¼ì²éÇÅÁº
 	for(ai::int32 i = 0;i<this->bluePolyOutline.size();i++)
 	{
 		for(ai::int32 j = 0;j<blackLayer.GetBlackByPassRoadNum();j++)
@@ -403,15 +415,15 @@ ASErr BrownLayer::GetPathOfLayer(AIArtHandle path)
 		if(style.strokePaint==1&&style.fillPaint == 0&&style.stroke.color.c.p.shiftDist<1)
 		{
 			myPath.lineWidth = style.stroke.width;
-			if(style.stroke.color.c.p.shiftDist==0)//ç­‰é«˜çº¿
+			if(style.stroke.color.c.p.shiftDist==0)//µÈ¸ßÏß
 	    	{
 			    this->Add(3,myPath);
 		    }
-			else if(style.stroke.color.c.p.shiftDist>=0.2&&style.stroke.color.c.p.shiftDist<=0.21)//æ·±æ£•è‰²é“è·¯
+			else if(style.stroke.color.c.p.shiftDist>=0.2&&style.stroke.color.c.p.shiftDist<=0.21)//Éî×ØÉ«µÀÂ·
 		    {
 			    this->Add(1,myPath);
 		    }
-		    else if(style.stroke.color.c.p.shiftDist>=0.6&&style.stroke.color.c.p.shiftDist<=0.61)//æµ…æ£•è‰²é“è·¯
+		    else if(style.stroke.color.c.p.shiftDist>=0.6&&style.stroke.color.c.p.shiftDist<=0.61)//Ç³×ØÉ«µÀÂ·
 		    {
 			    this->Add(2,myPath);
 		    }
@@ -472,7 +484,7 @@ ai::int32 BrownLayer::GetOtherWhiteNum()
 ASErr BrownLayer::CheckError7(BlueLayer blueLayer,CollectError& collectError)
 {
 	ASErr error = kNoErr;
-	//åªè¦ç­‰é«˜çº¿ä¸åŒçº¿æ²³ç›¸äº¤å³æŠ¥é”™
+	//Ö»ÒªµÈ¸ßÏßÓëË«ÏßºÓÏà½»¼´±¨´í
 	for(ai::int32 i=0;i<this->contourLine.size();i++)
 	{
 		for(ai::int32 j = 0;j<blueLayer.GetBluePolyOutLineNum();j++)
@@ -504,6 +516,18 @@ ASErr BrownLayer::CheckError8(BlueLayer blueLayer,CollectError& collectError)
 	}
 	return error;
 }
+ASErr BrownLayer::CheckError14(CollectError& collectError)
+{
+	ASErr error = kNoErr;
+	for(ai::int32 i=0;i<this->contourLine.size()-1;i++)
+	{
+		if(shortestDistanceBetweenPolylines(contourLine[i],contourLine[i+1])<0.2)
+		{
+			collectError.AddError(14,this->contourLine[i].layerOrdinalNum,this->contourLine[i].artOrdinalNum);
+		}
+	}
+	return error;
+}
 
 AIBoolean BlackLayer::Add(ai::int16 type,MyPath myPath)
 {
@@ -524,7 +548,7 @@ AIBoolean BlackLayer::Add(ai::int16 type,MyPath myPath)
 	default:return false;
 	}
 }
-	//ä¸‹é¢ä¸‰ä¸ªå‡½æ•°å‡ä¸ºè·å–å‡½æ•°æœåŠ¡
+	//ÏÂÃæÈı¸öº¯Êı¾ùÎª»ñÈ¡º¯Êı·şÎñ
 ASErr BlackLayer::GetPathOfLayer(AIArtHandle path)
 {
 	ASErr error = kNoErr;
@@ -532,12 +556,11 @@ ASErr BlackLayer::GetPathOfLayer(AIArtHandle path)
 	ai::int32 curArtNum = 0;
 	ai::int32 curLayerNum = 3;
 	
-	vector<MyPath> temp;//æš‚æ—¶å‚¨å­˜ä¸èƒ½ç›´æ¥åˆ†ç±»çš„path
+	vector<MyPath> temp;//ÔİÊ±´¢´æ²»ÄÜÖ±½Ó·ÖÀàµÄpath
 
 	MyPath myPath;
 	myPath.layerOrdinalNum = curLayerNum;
 	AIPathStyle style;
-	
 	while(path)
 	{
 		
@@ -552,15 +575,14 @@ ASErr BlackLayer::GetPathOfLayer(AIArtHandle path)
 		sAIPath->GetPathSegmentCount(path,&myPath.segmentNum);
 	    sAIPath->GetPathSegments(path,0,myPath.segmentNum,myPath.segment);
 		sAIPath->GetPathArea(path,&myPath.area);
-		
-		//è·å–æ–‡å­—
+		//»ñÈ¡ÎÄ×Ö
 		if(style.fillPaint==1&&style.strokePaint==0&&style.fill.color.c.p.shiftDist==0&&myPath.segmentNum>4)
 		{
 			this->Add(1,myPath);
 		}
 		else if(style.fillPaint==1&&style.strokePaint==0&&style.fill.color.c.p.shiftDist==0&&myPath.segmentNum==4&&
 			round(fabs(myPath.segment[0].p.v-myPath.segment[1].p.v)/unitConversation*100)/100==0.2&&
-			round(fabs(myPath.segment[0].p.h-myPath.segment[1].p.h)/unitConversation*100)/100==0.2)//è·å–pole
+			round(fabs(myPath.segment[0].p.h-myPath.segment[1].p.h)/unitConversation*100)/100==0.2)//»ñÈ¡pole
 		{
 			this->Add(2,myPath);
 		}
@@ -570,7 +592,7 @@ ASErr BlackLayer::GetPathOfLayer(AIArtHandle path)
 		}
 		else if(style.fillPaint==0&&style.strokePaint==0&&style.stroke.width>=0.3401&&style.stroke.width<=0.3403&&myPath.segmentNum==4)
 		{
-			//æ­¤å¤„åˆ¤æ–­æ¡¥æ¢ï¼Œä»…ä»…æ˜¯ç®€å•çš„è§„å¾‹åˆ¤æ–­ï¼Œå¯èƒ½æ˜¯ä¸å‡†çš„ï¼Œåç»­çœ‹æƒ…å†µè°ƒæ•´
+			//´Ë´¦ÅĞ¶ÏÇÅÁº£¬½ö½öÊÇ¼òµ¥µÄ¹æÂÉÅĞ¶Ï£¬¿ÉÄÜÊÇ²»×¼µÄ£¬ºóĞø¿´Çé¿öµ÷Õû
 			sAIArt->GetArtSibling(path,&path);
 			sAIPathStyle->GetPathStyle(path,&style);
 			ai::int16 num;
@@ -603,7 +625,7 @@ ASErr BlackLayer::GetPathOfLayer(AIArtHandle path)
 				sAIArt->GetArtPriorSibling(path,&path);
 				sAIPathStyle->GetPathStyle(path,&style);
 			}
-			//è‹¥ä¸æ˜¯æ¡¥æ¢åˆ™æ˜¯è·¯
+			//Èô²»ÊÇÇÅÁºÔòÊÇÂ·
 			if(flag == 0)
 			{
 				this->Add(4,myPath);
@@ -619,12 +641,18 @@ ASErr BlackLayer::GetPathOfLayer(AIArtHandle path)
 			{
 				AIReal length = sqrt(pow(myPath.segment[0].p.h-myPath.segment[1].p.h,2) + pow(myPath.segment[0].p.v-myPath.segment[1].p.v,2));
 				if(length>=1.983&&length<=1.985)
+				{
 					this->Add(7,myPath);
+				}
 				else
+				{
 					temp.push_back(myPath);
+				}
 			}
-			else
-				temp.push_back(myPath);//åœ¨åç»­å¤„ç†ä¸­ä¼šè¢«åˆ†åˆ°5,8ä¸­ï¼Œ
+			else//ÔÚºóĞø´¦ÀíÖĞ»á±»·Öµ½5,8ÖĞ£¬
+			{
+				temp.push_back(myPath);
+			}
 		}
 		else if(style.fillPaint==0&&style.strokePaint==1&&style.stroke.width>=0.5668&&style.stroke.width<=0.5670)
 		{
@@ -674,8 +702,6 @@ ASErr BlackLayer::GetPathOfLayer(AIArtHandle path)
 		{
 			this->Add(11,myPath);
 		}
-
-		
 		sAIArt->GetArtSibling(path,&path);
 		curArtNum++;
 	}
@@ -743,7 +769,7 @@ void BlackLayer::Classify(vector<MyPath> paths)
 	{
 		this->Add(5,paths[i]);
 	}
-	//å°†åœ¨é“è·¯ä¸­å‚¨å­˜çš„é»‘çŸ³å¤´çš„è¾¹çº¿ç§»é™¤
+	//½«ÔÚµÀÂ·ÖĞ´¢´æµÄºÚÊ¯Í·µÄ±ßÏßÒÆ³ı
 	for(ai::int32 i = 0;i<this->stone.size();i++)
 	{
 		for(ai::int32 j = 0;j<this->blackByPassRoad.size();j++)
@@ -901,7 +927,7 @@ ASErr BlackLayer::CheckError4(GreenLayer greenLayer,CollectError& collectError)
 {
 	ASErr error = kNoErr;
 
-	//åç»­åº”è¯¥å¯ä»¥ä¼˜åŒ–ï¼Œæ­¤å¤„å†™çš„å¾ˆæš´åŠ›ï¼Œæ€è·¯æ˜¯å…ˆæ‰¾å‡ºä¸è·¯ç›¸äº¤çš„ç»¿è‰²å¤šè¾¹å½¢ï¼Œç„¶åä»blackLayerä¸­çš„otherWhiteåŒ¹é…å¯¹åº”çš„ç»¿è‰²å¤šè¾¹å½¢ï¼Œä»è€Œåˆ¤æ–­æ˜¯å¦è¦†ç›–
+	//ºóĞøÓ¦¸Ã¿ÉÒÔÓÅ»¯£¬´Ë´¦Ğ´µÄºÜ±©Á¦£¬Ë¼Â·ÊÇÏÈÕÒ³öÓëÂ·Ïà½»µÄÂÌÉ«¶à±ßĞÎ£¬È»ºó´ÓblackLayerÖĞµÄotherWhiteÆ¥Åä¶ÔÓ¦µÄÂÌÉ«¶à±ßĞÎ£¬´Ó¶øÅĞ¶ÏÊÇ·ñ¸²¸Ç
 	for(ai::int32 i = 0;i<this->blackMainRoad.size();i++)
 	{
 		for(ai::int32 j = 0;j<greenLayer.GetGreenPolyBigNum();j++)
@@ -959,7 +985,7 @@ ASErr BlackLayer::CheckError5(CollectError& collectError)
 		{
 			if(j!=i)
 			{
-				//å¼€å§‹åˆ¤æ–­ä¸¤æ¡wireæ˜¯å¦ç›¸æ¥
+				//¿ªÊ¼ÅĞ¶ÏÁ½ÌõwireÊÇ·ñÏà½Ó
 				if(SegmentEqual(this->wire[i].segment[0],this->wire[j].segment[0])||SegmentEqual(this->wire[i].segment[0],this->wire[j].segment[1])||
 					SegmentEqual(this->wire[i].segment[1],this->wire[j].segment[1])||SegmentEqual(this->wire[i].segment[1],this->wire[j].segment[0]))
 					count++;
@@ -1024,7 +1050,6 @@ ASErr BlackLayer::CheckError9(CollectError& collectError)
 			if(JudgePathIntersectPath(this->blackSingleLineRoad[i],this->blackMainRoad[j]))
 			{
 				collectError.AddError(9,this->blackSingleLineRoad[i].layerOrdinalNum,this->blackSingleLineRoad[i].artOrdinalNum);
-
 			}
 		}
 	}
@@ -1033,7 +1058,7 @@ ASErr BlackLayer::CheckError9(CollectError& collectError)
 ASErr BlackLayer::CheckError10(CollectError& collectError)
 {
 	ASErr error = kNoErr;
-	//æš‚æ—¶æœ‰ç‚¹é—®é¢˜ï¼Œåç»­è§£å†³
+	//ÔİÊ±ÓĞµãÎÊÌâ£¬ºóĞø½â¾ö
 	for(ai::int32 i = 0;i<this->blackByPassRoad.size();i++)
 	{
 		for(ai::int32 j = 0;j<this->blackMainRoad.size();j++)
