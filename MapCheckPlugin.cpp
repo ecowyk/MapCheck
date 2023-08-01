@@ -16,44 +16,44 @@ ASErr AnalyseMap(GreenLayer& greenLayer,BlueLayer& blueLayer,BrownLayer& brownLa
 {
 	ASErr error = kNoErr;
 
-	ai::int32 layerListCount;//Í¼²ãÁĞ±íÊı
-	ai::int32 layerCount;//Ò»¸öÍ¼²ãÁĞ±íÖĞµÄÍ¼²ãÊı
+	ai::int32 layerListCount;//å›¾å±‚åˆ—è¡¨æ•°
+	ai::int32 layerCount;//ä¸€ä¸ªå›¾å±‚åˆ—è¡¨ä¸­çš„å›¾å±‚æ•°
 
-	AILayerList list;//Í¼²ãÁĞ±í
-	AILayerHandle layer;//Í¼²ã
+	AILayerList list;//å›¾å±‚åˆ—è¡¨
+	AILayerHandle layer;//å›¾å±‚
 
-	AIArtHandle path;//Â·¾¶
+	AIArtHandle path;//è·¯å¾„
 	
-	//»ñÈ¡Â·¾¶
-	error = sAILayerList->Count(&layerListCount);//»ñÈ¡
+	//è·å–è·¯å¾„
+	error = sAILayerList->Count(&layerListCount);//è·å–
 	error = sAILayerList->GetFirst(&list);
 	error = sAILayerList->CountLayers(list,&layerCount);
 	error = sAILayerList->GetFirstLayer(list,&layer);
 	error = sAIArt->GetFirstArtOfLayer(layer,&path);
-	error = sAIArt->GetArtFirstChild(path,&path);//»ñÈ¡µÚÒ»ÌõÂ·¾¶
+	error = sAIArt->GetArtFirstChild(path,&path);//è·å–ç¬¬ä¸€æ¡è·¯å¾„
 
-	//ÊÕ¼¯ÂÌ°æĞÅÏ¢
+	//æ”¶é›†ç»¿ç‰ˆä¿¡æ¯
 	greenLayer.GetPathOfLayer(path);
 	progressAnalyse = 25;
-	//½øÈëÀ¶°æÍ¼²ã
+	//è¿›å…¥è“ç‰ˆå›¾å±‚
 	error = sAILayer->GetNextLayer(layer,&layer);
 	error = sAIArt->GetFirstArtOfLayer(layer,&path);
 	error = sAIArt->GetArtFirstChild(path,&path);
-	//ÊÕ¼¯À¶°æĞÅÏ¢
+	//æ”¶é›†è“ç‰ˆä¿¡æ¯
 	blueLayer.GetPathOfLayer(path);
 	progressAnalyse = 50;
-	//½øÈë×Ø°æÍ¼²ã
+	//è¿›å…¥æ£•ç‰ˆå›¾å±‚
 	error = sAILayer->GetNextLayer(layer,&layer);
 	error = sAIArt->GetFirstArtOfLayer(layer,&path);
 	error = sAIArt->GetArtFirstChild(path,&path);
-	//ÊÕ¼¯×Ø°æĞÅÏ¢
+	//æ”¶é›†æ£•ç‰ˆä¿¡æ¯
 	brownLayer.GetPathOfLayer(path);
 	progressAnalyse = 75;
-	//½øÈëºÚ°æÍ¼²ã
+	//è¿›å…¥é»‘ç‰ˆå›¾å±‚
 	error = sAILayer->GetNextLayer(layer,&layer);
 	error = sAIArt->GetFirstArtOfLayer(layer,&path);
 	error = sAIArt->GetArtFirstChild(path,&path);
-	//ÊÕ¼¯ºÚ°æĞÅÏ¢
+	//æ”¶é›†é»‘ç‰ˆä¿¡æ¯
 	blackLayer.GetPathOfLayer(path);
 	progressAnalyse = 100;
 	return error;
@@ -139,6 +139,31 @@ ASErr CheckError(GreenLayer greenLayer,BlueLayer blueLayer,BrownLayer brownLayer
 ASErr GenerateReport(CollectError collectError)
 {
 	ASErr error = kNoErr;
+	ofstream fout;
+	fout.open("ErrorReport.txt",ios::out|ios::trunc);
+	fout<<"åœ°å›¾æ£€æŸ¥é”™è¯¯æŠ¥å‘Šå¦‚ä¸‹ï¼š"<<endl;
+	fout<<"é”™è¯¯ä¸ªæ•°å…±è®¡ï¼š"<<collectError.ErrorNum<<"ä¸ª"<<endl;
+	fout<<"å…·ä½“é”™è¯¯ä¸ºï¼š"<<endl;
+	for(ai::int32 i = 0;i<collectError.ErrorNum;i++)
+	{
+		switch(collectError.errors[i].layerOrdinalNum)
+		{
+		case 0:
+			fout<<"ç»¿ç‰ˆå›¾å±‚ç¬¬"<<collectError.errors[i].artOrdinalNum<<"ä¸ªåœ°ç‰©é”™è¯¯ï¼Œ"<<"ç±»å‹ä¸ºï¼š"<<collectError.ErrorTypeList[collectError.errors[i].errorType]<<"ï¼›"<<endl;
+			break;
+		case 1:
+			fout<<"è“ç‰ˆå›¾å±‚ç¬¬"<<collectError.errors[i].artOrdinalNum<<"ä¸ªåœ°ç‰©é”™è¯¯ï¼Œ"<<"ç±»å‹ä¸ºï¼š"<<collectError.ErrorTypeList[collectError.errors[i].errorType]<<"ï¼›"<<endl;
+			break;
+		case 2:
+			fout<<"æ£•ç‰ˆå›¾å±‚ç¬¬"<<collectError.errors[i].artOrdinalNum<<"ä¸ªåœ°ç‰©é”™è¯¯ï¼Œ"<<"ç±»å‹ä¸ºï¼š"<<collectError.ErrorTypeList[collectError.errors[i].errorType]<<"ï¼›"<<endl;
+			break;
+		case 3:
+			fout<<"é»‘ç‰ˆå›¾å±‚ç¬¬"<<collectError.errors[i].artOrdinalNum<<"ä¸ªåœ°ç‰©é”™è¯¯ï¼Œ"<<"ç±»å‹ä¸ºï¼š"<<collectError.ErrorTypeList[collectError.errors[i].errorType]<<"ï¼›"<<endl;
+			break;
+		}
+	}
+	fout<<"ä»¥ä¸Šä¸ºæœ¬æ¬¡é”™è¯¯æŠ¥å‘Šã€‚";
+	fout.close();
 	return error;
 }
 
@@ -158,10 +183,10 @@ int RegisterErrList(HINSTANCE hInstance,HWND hwnd)
 	wndClass.lpszClassName = TEXT("MainWClass");
 	wndClass.hIconSm = nullptr;
 
-	// ×¢²á´°¿ÚÀà
+	// æ³¨å†Œçª—å£ç±»
 	::RegisterClassEx(&wndClass);
 	
-	// ´´½¨´°¿Ú
+	// åˆ›å»ºçª—å£
 	hwnd = ::CreateWindowEx(\
 			0, \
 			TEXT("MainWClass"), \
@@ -178,9 +203,9 @@ int RegisterErrList(HINSTANCE hInstance,HWND hwnd)
 
 	
 
-	// ÏÔÊ¾´°¿Ú
+	// æ˜¾ç¤ºçª—å£
 	::ShowWindow(hwnd, SW_SHOW);
-	// Ë¢ĞÂ´°¿Ú¿Í»§Çø
+	// åˆ·æ–°çª—å£å®¢æˆ·åŒº
 	::UpdateWindow(hwnd);
 
 	MSG msg;
@@ -215,8 +240,8 @@ LRESULT CALLBACK WindProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 		    for(ai::int32 i = 0;i<collectError.ErrorNum;i++)
 		    {
 			    staticText[i] = CreateWindowEx(0,"Static",collectError.ErrorTypeList[collectError.errors[i].errorType].c_str(),WS_VISIBLE | WS_CHILD | WS_BORDER | SS_LEFT | SS_NOTIFY,10,10+i*50-vscrollPos,400,30,hwnd,NULL,hInstance,NULL);
-			    //highLightButton[i] = CreateWindowEx(0,"BUTTON","¸ßÁÁ¾ÓÖĞÏÔÊ¾",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_PUSHBUTTON,450,10+i*50-vscrollPos,150,30,hwnd,NULL,hInstance,NULL);
-			    correctedCheckBox[i] = CreateWindowEx(0,"BUTTON","ÒÑĞŞÕı",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_AUTOCHECKBOX,650,10+i*50-vscrollPos,100,30,hwnd,NULL,hInstance,NULL);
+			    //highLightButton[i] = CreateWindowEx(0,"BUTTON","é«˜äº®å±…ä¸­æ˜¾ç¤º",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_PUSHBUTTON,450,10+i*50-vscrollPos,150,30,hwnd,NULL,hInstance,NULL);
+			    correctedCheckBox[i] = CreateWindowEx(0,"BUTTON","å·²ä¿®æ­£",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_AUTOCHECKBOX,650,10+i*50-vscrollPos,100,30,hwnd,NULL,hInstance,NULL);
 			    if(haveCorrected[i] == 1)
 			    {
 				    SendMessage(correctedCheckBox[i],BM_SETCHECK,BST_CHECKED,0);
@@ -234,9 +259,9 @@ LRESULT CALLBACK WindProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 		    {
 			    errTypeCheckBox[i] = CreateWindowEx(0,"BUTTON",collectError.ErrorTypeList[i+1].c_str(),WS_VISIBLE | WS_CHILD | WS_BORDER | BS_AUTOCHECKBOX | BS_LEFTTEXT,400,10+(i-round(ErrorTypeNum/2))*50,350,30,hwnd,NULL,hInstance,NULL);
 		    }
-		    selectAll = CreateWindowEx(0,"BUTTON","È«Ñ¡",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_PUSHBUTTON | BS_CENTER,50,round(ErrorTypeNum/2)*50,100,30,hwnd,NULL,hInstance,NULL);
-		    deselectAll = CreateWindowEx(0,"BUTTON","È¡ÏûÈ«Ñ¡",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_PUSHBUTTON | BS_CENTER,200,round(ErrorTypeNum/2)*50,200,30,hwnd,NULL,hInstance,NULL);
-		    check = CreateWindowEx(0,"BUTTON","¿ªÊ¼¼ì²â",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_PUSHBUTTON | BS_CENTER,500,round(ErrorTypeNum/2)*50,200,30,hwnd,NULL,hInstance,NULL);
+		    selectAll = CreateWindowEx(0,"BUTTON","å…¨é€‰",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_PUSHBUTTON | BS_CENTER,50,round(ErrorTypeNum/2)*50,100,30,hwnd,NULL,hInstance,NULL);
+		    deselectAll = CreateWindowEx(0,"BUTTON","å–æ¶ˆå…¨é€‰",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_PUSHBUTTON | BS_CENTER,200,round(ErrorTypeNum/2)*50,200,30,hwnd,NULL,hInstance,NULL);
+		    check = CreateWindowEx(0,"BUTTON","å¼€å§‹æ£€æµ‹",WS_VISIBLE | WS_CHILD | WS_BORDER | BS_PUSHBUTTON | BS_CENTER,500,round(ErrorTypeNum/2)*50,200,30,hwnd,NULL,hInstance,NULL);
 		}
 		return 0;
 	}
@@ -361,9 +386,9 @@ int RegisterCheckErrWnd(HINSTANCE hInstance,HWND hwnd)
 	wndClass.lpszMenuName = nullptr;
 	wndClass.lpszClassName = TEXT("MainWClass");
 	wndClass.hIconSm = nullptr;
-	// ×¢²á´°¿ÚÀà
+	// æ³¨å†Œçª—å£ç±»
 	::RegisterClassEx(&wndClass);
-	// ´´½¨´°¿Ú
+	// åˆ›å»ºçª—å£
 	hwnd = ::CreateWindowEx(\
 			0, \
 			TEXT("MainWClass"), \
@@ -377,9 +402,9 @@ int RegisterCheckErrWnd(HINSTANCE hInstance,HWND hwnd)
 			nullptr, \
 			hInstance, \
 			nullptr);
-	// ÏÔÊ¾´°¿Ú
+	// æ˜¾ç¤ºçª—å£
 	::ShowWindow(hwnd, SW_SHOW);
-	// Ë¢ĞÂ´°¿Ú¿Í»§Çø
+	// åˆ·æ–°çª—å£å®¢æˆ·åŒº
 	::UpdateWindow(hwnd);
 	MSG msg;
 	while (::GetMessage(&msg, nullptr, 0, 0))
@@ -417,10 +442,10 @@ DWORD WINAPI PBThreadProc(LPVOID lpParameter)
             SendMessage(hwndPB, PBM_DELTAPOS,(WPARAM)(progressAnalyse), (LPARAM)0);
             if (SendMessage(hwndPB, PBM_GETPOS, (WPARAM)0, (LPARAM)0) == range.iHigh)
             {
-                Sleep(500); //µ±Ç°½ø¶ÈÒª±£ÁôÒ»¶¨Ê±¼ä
+                Sleep(500); //å½“å‰è¿›åº¦è¦ä¿ç•™ä¸€å®šæ—¶é—´
                 SendMessage(hwndPB,WM_CLOSE,0,0);
             }
-            Sleep(100); //Ã¿´Î¸ü¸Ä½ø¶Èºó£¬Í£ÁôÒ»¶¨Ê±¼ä
+            Sleep(100); //æ¯æ¬¡æ›´æ”¹è¿›åº¦åï¼Œåœç•™ä¸€å®šæ—¶é—´
 	    }
 	}
 	else
@@ -430,10 +455,10 @@ DWORD WINAPI PBThreadProc(LPVOID lpParameter)
 			 SendMessage(hwndPB, PBM_DELTAPOS,(WPARAM)(progressCheck), (LPARAM)0);
 			 if (SendMessage(hwndPB, PBM_GETPOS, (WPARAM)0, (LPARAM)0) == range.iHigh)
              {
-                 Sleep(500); //µ±Ç°½ø¶ÈÒª±£ÁôÒ»¶¨Ê±¼ä
+                 Sleep(500); //å½“å‰è¿›åº¦è¦ä¿ç•™ä¸€å®šæ—¶é—´
                  SendMessage(hwndPB,WM_CLOSE,0,0);
              }
-             Sleep(100); //Ã¿´Î¸ü¸Ä½ø¶Èºó£¬Í£ÁôÒ»¶¨Ê±¼ä
+             Sleep(100); //æ¯æ¬¡æ›´æ”¹è¿›åº¦åï¼Œåœç•™ä¸€å®šæ—¶é—´
 		}
 	}
 }
@@ -473,12 +498,12 @@ ASErr MapCheckPlugin::ShutdownPlugin( SPInterfaceMessage *message )
 	return kNoErr;
 }
 
-//Ìí¼Ó²Ëµ¥
+//æ·»åŠ èœå•
 ASErr MapCheckPlugin::AddMenus(SPInterfaceMessage* message)
 {
 	ASErr error = kNoErr;
 
-	//Ê×ÏÈÌí¼ÓÒ»¸ö²Ëµ¥Ïî
+	//é¦–å…ˆæ·»åŠ ä¸€ä¸ªèœå•é¡¹
 	AIPlatformAddMenuItemDataUS throwAwayMenuData;
 	throwAwayMenuData.groupName = kWindowUtilsMenuGroup;
 	throwAwayMenuData.itemText = ai::UnicodeString("MapCheck");
@@ -487,11 +512,11 @@ ASErr MapCheckPlugin::AddMenus(SPInterfaceMessage* message)
 	if(error)
 		goto error;
 
-	//Ìí¼Ó×Ó²Ëµ¥×é
+	//æ·»åŠ å­èœå•ç»„
 	AIMenuGroup throwAwayMenuGroup;
 	sAIMenu->AddMenuGroupAsSubMenu(kSecondMenuGroup,0,throwAwayAIMenu,&throwAwayMenuGroup);
 
-	//Ïò×Ó²Ëµ¥×éÄÚÌí¼Ó²Ëµ¥Ïî
+	//å‘å­èœå•ç»„å†…æ·»åŠ èœå•é¡¹
 	throwAwayMenuData.groupName = kSecondMenuGroup;
 	throwAwayMenuData.itemText = ai::UnicodeString("AnalyseMap");
 	error = sAIMenu->AddMenuItem(message->d.self,NULL,&throwAwayMenuData,0,&fAnalyseMapMenu);
@@ -519,7 +544,7 @@ error:
 	return error;
 }
 
-//Æô¶¯ËùÑ¡²Ëµ¥ÏîµÄ¹¦ÄÜ
+//å¯åŠ¨æ‰€é€‰èœå•é¡¹çš„åŠŸèƒ½
 ASErr MapCheckPlugin::GoMenuItem(AIMenuMessage* message)
 {
 	
@@ -529,7 +554,7 @@ ASErr MapCheckPlugin::GoMenuItem(AIMenuMessage* message)
 	{
 		AnalyseMap(greenLayer,blueLayer,brownLayer,blackLayer);
 
-		//½ø¶ÈÌõ
+		//è¿›åº¦æ¡
 		flagPB = 0;
 		CreateProgressBar(hInstance,progressBarAnalyse);
 		CreateThread(NULL,0,PBThreadProc,progressBarAnalyse,0,0);
@@ -546,7 +571,7 @@ ASErr MapCheckPlugin::GoMenuItem(AIMenuMessage* message)
 	}
 	else if(message->menuItem == fGenerateReportMenu)
 	{
-		
+		GenerateReport(collectError);
     }
 	return error;
 
